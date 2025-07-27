@@ -67,6 +67,8 @@
             overflow: hidden;
             z-index: 1000;
         }
+
+        /* --- New Slideshow Styles --- */
         .slideshow-container {
             width: 100%;
             overflow: hidden;
@@ -74,22 +76,27 @@
             background: #fff;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            margin-bottom: 2rem;
+            margin-bottom: 2rem; /* Add some space below the slideshow */
         }
+
         .slideshow-track {
             display: flex;
+            /* (Image Width + Margin) * Number of Images * 2 */
             width: calc((250px + 2rem) * 12); 
             animation: scroll 40s linear infinite;
         }
+        
         .slideshow-track:hover {
             animation-play-state: paused;
         }
+
         .slide {
             width: 250px;
             height: 180px;
             flex-shrink: 0;
             margin: 0 1rem;
         }
+
         .slide img {
             width: 100%;
             height: 100%;
@@ -97,15 +104,19 @@
             border-radius: 0.5rem;
             transition: transform 0.3s ease;
         }
+        
         .slide img:hover {
             transform: scale(1.05);
         }
+
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { 
+                /* Move by the width of the original set of images */
                 transform: translateX(calc((-250px - 2rem) * 6)); 
             } 
         }
+
     </style>
 </head>
 <body class="bg-[#FDFBF6]">
@@ -130,6 +141,7 @@
                                 </a>
                             </div>
                         </div>
+                        <!-- Auth button placeholder -->
                         <div id="auth-container">
                             <a href="login.html" id="login-btn" class="bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-700 transition-colors">Login</a>
                             <a href="profile.html" id="profile-btn" class="hidden bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">Profile</a>
@@ -166,22 +178,27 @@
                     <h1 id="welcome-message" class="text-3xl font-bold text-gray-800">Welcome, Guest!</h1>
                     <p class="mt-2 text-gray-600">Here's your daily overview to help you source smarter and save more.</p>
                 </div>
+
+                <!-- Image Slideshow -->
                 <div class="slideshow-container">
                     <div class="slideshow-track">
+                        <!-- Original Set -->
                         <div class="slide"><img src="Images/images1.jpeg" alt="Street Food 1"></div>
-                        <div class="slide"><img src="Images/images5.jpeg" alt="Street Food 2"></div>
-                        <div class="slide"><img src="Images/images7.webp" alt="Grains and Lentils"></div>
-                        <div class="slide"><img src="Images/images6.jpeg" alt="Fresh Vegetables"></div>
-                        <div class="slide"><img src="Images/images2.jpg" alt="Sugar"></div>
-                        <div class="slide"><img src="Images/Images4.jpg" alt="Gram Flour"></div>
+                        <div class="slide"><img src="Images/images2.jpg" alt="Street Food 2"></div>
+                        <div class="slide"><img src="Images/Images4.jpg" alt="Grains and Lentils"></div>
+                        <div class="slide"><img src="Images/images5.jpeg" alt="Fresh Vegetables"></div>
+                        <div class="slide"><img src="Images/images6.jpeg" alt="Sugar"></div>
+                        <div class="slide"><img src="Images/images7.webp" alt="Gram Flour"></div>
+                        <!-- Duplicate Set for seamless loop -->
                         <div class="slide"><img src="Images/images1.jpeg" alt="Street Food 1"></div>
-                        <div class="slide"><img src="Images/images5.jpeg" alt="Street Food 2"></div>
-                        <div class="slide"><img src="Images/images7.webp" alt="Grains and Lentils"></div>
-                        <div class="slide"><img src="Images/images6.jpeg" alt="Fresh Vegetables"></div>
-                        <div class="slide"><img src="Images/images2.jpg" alt="Sugar"></div>
-                        <div class="slide"><img src="Images/Images4.jpg" alt="Gram Flour"></div>
+                        <div class="slide"><img src="Images/images2.jpg" alt="Street Food 2"></div>
+                        <div class="slide"><img src="Images/Images4.webp" alt="Grains and Lentils"></div>
+                        <div class="slide"><img src="Images/images5.jpeg" alt="Fresh Vegetables"></div>
+                        <div class="slide"><img src="Images/images6.jpeg" alt="Sugar"></div>
+                        <div class="slide"><img src="Images/images7.webp" alt="Gram Flour"></div>
                     </div>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-1 md:col-span-2 bg-white p-6 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold text-gray-700 mb-4">🔥 Top Deals Today</h2>
@@ -229,8 +246,8 @@
                     <p class="mt-2 text-gray-600">A space for shared knowledge. Here you'll find essential tips on hygiene, licensing, and best practices to help your business thrive.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-green-50 p-6 rounded-lg shadow-sm">
-                        <h2 class="text-xl font-semibold text-green-800 mb-3">🧼 Food Safety & Hygiene</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-amber-700 mb-3">🧼 Food Safety & Hygiene</h2>
                         <ul class="list-disc list-inside space-y-2 text-gray-600">
                             <li>Always wash hands with soap before handling food.</li>
                             <li>Use separate cutting boards for raw meat and vegetables.</li>
@@ -238,8 +255,8 @@
                             <li>Store food at correct temperatures to prevent spoilage.</li>
                         </ul>
                     </div>
-                    <div class="bg-blue-50 p-6 rounded-lg shadow-sm">
-                        <h2 class="text-xl font-semibold text-blue-800 mb-3">📜 Licensing & Permits</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-amber-700 mb-3">📜 Licensing & Permits</h2>
                         <ul class="list-disc list-inside space-y-2 text-gray-600">
                             <li>Ensure you have a valid FSSAI registration/license.</li>
                             <li>Display your license clearly at your stall.</li>
@@ -278,55 +295,6 @@
                 </div>
             </div>
         </main>
-        
-        <!-- Information Box Footer -->
-        <footer class="bg-gray-800 text-white mt-16">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <!-- Column 1: Brand Info -->
-                    <div>
-                        <h3 class="text-xl font-bold text-amber-500 mb-4">VendorLink</h3>
-                        <p class="text-gray-400">
-                            Connecting street food vendors with trusted suppliers across India. Building a stronger food ecosystem, one connection at a time.
-                        </p>
-                    </div>
-                    <!-- Column 2: Quick Links -->
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Find Suppliers</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Group Orders</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Price Comparison</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Delivery Tracking</a></li>
-                        </ul>
-                    </div>
-                    <!-- Column 3: Support -->
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Support</h3>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">How It Works</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Safety Guidelines</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms & Conditions</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    <!-- Column 4: Contact Us -->
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li>+91 9324544954</li>
-                            <li>support@vendorlink.in</li>
-                            <li>Mumbai, Maharashtra</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-8 pt-6 border-t border-gray-700 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
-                    <p>&copy; 2025 VendorLink. All rights reserved.</p>
-                    <p>Available in Hindi, English & Regional Languages</p>
-                </div>
-            </div>
-        </footer>
     </div>
 
     <div id="productModal" class="fixed inset-0 z-30 flex items-center justify-center p-4 modal-bg opacity-0 pointer-events-none">
@@ -381,24 +349,12 @@
                 { id: 's1', name: 'Mumbai Fresh Veggies', rating: 4.8, location: 'Dadar Market', contact: '9876543210' },
                 { id: 's2', name: 'Pune Agro Supply', rating: 4.5, location: 'Pune APMC', contact: '9123456789' },
                 { id: 's3', name: 'Quality Spices Co.', rating: 4.9, location: 'Masala Galli', contact: '8765432109' },
-                { id: 's4', name: 'Capital Dairy', rating: 4.7, location: 'Goregaon', contact: '8887776665' },
-                { id: 's5', name: 'National Grains', rating: 4.6, location: 'Vashi APMC', contact: '9988776655' },
             ];
-            
             const productsData = [
-                { id: 'p1', name: 'Tomatoes', category: 'Vegetables', supplierId: 's1', price: 25, unit: 'kg', imageUrl: 'Marketplace_Images/Tomato.jpeg' },
-                { id: 'p2', name: 'Tomatoes', category: 'Vegetables', supplierId: 's2', price: 28, unit: 'kg', imageUrl: 'Marketplace_Images/Tomato.jpeg' },
-                { id: 'p3', name: 'Onions', category: 'Vegetables', supplierId: 's1', price: 30, unit: 'kg', imageUrl: 'Marketplace_Images/onion.jpeg' },
-                { id: 'p4', name: 'Onions', category: 'Vegetables', supplierId: 's2', price: 29, unit: 'kg', imageUrl: 'Marketplace_Images/onion.jpeg' },
-                { id: 'p5', name: 'Potatoes', category: 'Vegetables', supplierId: 's1', price: 20, unit: 'kg', imageUrl: 'Marketplace_Images/potato.jpeg' },
-                { id: 'p6', name: 'Potatoes', category: 'Vegetables', supplierId: 's2', price: 22, unit: 'kg', imageUrl: 'Marketplace_Images/potato.jpeg' },
-                { id: 'p7', name: 'Turmeric Powder', category: 'Spices', supplierId: 's3', price: 180, unit: 'kg', imageUrl: 'Marketplace_Images/turmeric.jpeg' },
-                { id: 'p8', name: 'Chilli Powder', category: 'Spices', supplierId: 's3', price: 220, unit: 'kg', imageUrl: 'Marketplace_Images/chilli.jpeg' },
-                { id: 'p9', name: 'Milk', category: 'Dairy', supplierId: 's4', price: 55, unit: 'litre', imageUrl: 'Marketplace_Images/milk.jpeg' },
-                { id: 'p10', name: 'Paneer', category: 'Dairy', supplierId: 's4', price: 350, unit: 'kg', imageUrl: 'Marketplace_Images/panner.jpeg' },
-                { id: 'p11', name: 'Basmati Rice', category: 'Grains', supplierId: 's5', price: 90, unit: 'kg', imageUrl: 'Marketplace_Images/rice.jpeg' },
+                { id: 'p1', name: 'Tomatoes', category: 'Vegetables', supplierId: 's1', price: 25, unit: 'kg' },
+                { id: 'p2', name: 'Tomatoes', category: 'Vegetables', supplierId: 's2', price: 28, unit: 'kg' },
+                { id: 'p3', name: 'Onions', category: 'Vegetables', supplierId: 's1', price: 30, unit: 'kg' },
             ];
-
             const communityTips = [
                 { id: 't1', author: 'Vendor A', text: 'Always buy onions in bulk during harvest season to save costs!', date: '2025-07-20' },
                 { id: 't2', author: 'Vendor B', text: 'A simple trick for keeping coriander fresh: wrap it in a damp cloth and refrigerate.', date: '2025-07-21' },
@@ -573,7 +529,7 @@
                         const product = products[0];
                         return `
                             <div class="bg-white p-4 rounded-lg shadow-sm border border-transparent hover:border-amber-500 hover:shadow-md transition-all cursor-pointer relative" data-product-name="${name}">
-                                <img src="${product.imageUrl}" alt="${name}" class="w-full h-32 object-cover rounded-md mb-4">
+                                <div class="w-full h-32 bg-gray-200 rounded-md mb-4 flex items-center justify-center"><span class="text-4xl">${product.category === 'Vegetables' ? '🍅' : '🌶️'}</span></div>
                                 <h3 class="text-lg font-semibold text-gray-800">${name}</h3>
                                 <p class="text-sm text-gray-500">${product.category}</p>
                                 <div class="mt-4 flex justify-between items-center">
@@ -632,7 +588,7 @@
                 } else {
                     noSupplierResults.classList.add('hidden');
                     supplierList.innerHTML = filteredSuppliers.map(supplier => `
-                        <div class="bg-amber-50 p-6 rounded-lg shadow-sm">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
                             <h3 class="text-xl font-bold text-gray-800">${supplier.name}</h3>
                             <p class="text-gray-500 mb-3">${supplier.location}</p>
                             <div class="flex items-center"><span class="text-amber-500 font-bold text-lg mr-2">${supplier.rating}</span><div class="flex">${'★'.repeat(Math.floor(supplier.rating))}${'☆'.repeat(5 - Math.floor(supplier.rating))}</div></div>
