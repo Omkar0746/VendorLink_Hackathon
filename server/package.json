@@ -1,0 +1,31 @@
+{
+  "name": "vendorlink-backend",
+  "version": "1.0.0",
+  "description": "Backend for VendorLink Hackathon project using Node.js, Express, MongoDB Atlas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongodb",
+    "vendorlink",
+    "backend",
+    "api"
+  ],
+  "author": "Omkar Suryakant Shinde",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.20.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
