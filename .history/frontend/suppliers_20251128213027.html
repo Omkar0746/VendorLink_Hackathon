@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Suppliers • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<main class="max-w-7xl mx-auto px-4 py-10">
+
+  <!-- Page Title -->
+  <h1 id="pageTitle" class="text-3xl font-extrabold mb-8">Suppliers</h1>
+
+  <!-- SUPPLIER LIST SECTION -->
+  <div id="supplierList" class="grid md:grid-cols-3 gap-8"></div>
+
+  <!-- SUPPLIER PROFILE SECTION -->
+  <div id="supplierProfile" class="hidden">
+
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md flex gap-6">
+
+      <img id="profileImage"
+           src=""
+           class="w-40 h-40 object-cover rounded-xl border shadow" />
+
+      <div>
+        <h2 id="shopName" class="text-2xl font-bold"></h2>
+        <p id="supplierType" class="text-gray-500 dark:text-gray-400">Raw Material Supplier</p>
+
+        <p class="mt-3 text-amber-600 font-semibold">
+          ⭐ <span id="rating">4.5</span> (Avg Rating)
+        </p>
+
+        <p class="mt-3 text-gray-600 dark:text-gray-300">
+          📍 <span id="location"></span>
+        </p>
+
+        <p class="mt-1 text-gray-600 dark:text-gray-300">
+          ☎ <span id="contact"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <section class="mt-10">
+      <h3 class="text-xl font-bold mb-4">⭐ Customer Reviews</h3>
+      <div id="reviewList" class="space-y-4"></div>
+    </section>
+
+  </div>
+
+</main>
+
+<script src="assets/js/suppliers.js"></script>
+
+</body>
+</html>

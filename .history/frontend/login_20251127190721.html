@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+
+  <style>
+    .nav-link { color:#444; text-decoration:none; }
+    .nav-link:hover { color:#d97706; }
+    .dark .nav-link { color:#ddd; }
+
+    .btn-outline {
+      padding:6px 14px; border:1px solid #d97706; color:#d97706; border-radius:8px;
+    }
+    .btn-outline:hover { background:#fff7e6; }
+
+    .btn-filled {
+      background:#d97706; color:white; padding:6px 14px; border-radius:8px;
+    }
+    .btn-filled:hover { background:#b45309; }
+
+    .profile-btn {
+      padding:6px 14px; background:#f3f4f6; border-radius:8px;
+    }
+    .dark .profile-btn { background:#374151; }
+
+    .dropdown-item {
+      padding:10px 15px; display:block; font-size:0.9rem;
+      color:#4b5563;
+    }
+    .dropdown-item:hover { background:#f5f5f5; }
+    .dark .dropdown-item { color:#e5e7eb; }
+
+    .toggle-checkbox { width:40px; height:20px; accent-color:#d97706; }
+
+    .theme-btn { padding:6px; background:#e5e7eb; border-radius:6px; }
+    .dark .theme-btn { background:#4b5563; }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR START -->
+<nav
+  class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700"
+>
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    
+    <div
+      class="flex items-center gap-2 cursor-pointer"
+      onclick="window.location.href='index.html'"
+    >
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight"
+        >VendorLink</span
+      >
+    </div>
+
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <a
+        id="nav-supplier-dashboard"
+        href="supplier_dashboard.html"
+        class="nav-link hidden"
+        >Dashboard</a
+      >
+    </div>
+
+    <div class="flex items-center gap-4">
+
+      <div id="roleSliderWrapper" class="hidden">
+        <label
+          class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300"
+        >
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox" />
+        </label>
+      </div>
+
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div
+          id="profileDropdown"
+          class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden"
+        >
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+          <button
+            id="logoutBtn"
+            class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- NAVBAR END -->
+
+<main class="min-h-[80vh] flex items-center justify-center px-4">
+  <div
+    class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-10 w-full max-w-md"
+  >
+    <h1 class="text-3xl font-bold text-center mb-6">Welcome Back 👋</h1>
+
+    <form id="loginForm" class="space-y-6">
+      <div>
+        <label class="text-sm text-gray-600 dark:text-gray-300">Email</label>
+        <input
+          id="email"
+          type="email"
+          required
+          class="w-full mt-1 p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500"
+        />
+      </div>
+
+      <div>
+        <label class="text-sm text-gray-600 dark:text-gray-300">Password</label>
+        <input
+          id="password"
+          type="password"
+          required
+          class="w-full mt-1 p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-amber-500"
+        />
+      </div>
+
+      <button
+        class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg text-lg font-semibold shadow-md"
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="text-center mt-6 text-sm text-gray-600 dark:text-gray-300">
+      New user?
+      <a
+        href="signup.html"
+        class="text-amber-600 dark:text-amber-400 font-semibold underline"
+        >Create an account</a
+      >
+    </p>
+  </div>
+</main>
+
+<!-- JS -->
+<script type="module" src="assets/js/navbar.js"></script>
+<script type="module" src="assets/js/login.js"></script>
+</body>
+</html>

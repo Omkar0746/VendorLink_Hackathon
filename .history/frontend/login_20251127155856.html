@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VendorLink • Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+<div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+
+    <h2 class="text-3xl font-bold text-center mb-6">Welcome Back</h2>
+
+    <form id="loginForm" class="space-y-4">
+        <input id="emailInput" type="email" placeholder="Email"
+               class="w-full p-3 border rounded-lg" required>
+
+        <input id="passwordInput" type="password" placeholder="Password"
+               class="w-full p-3 border rounded-lg" required>
+
+        <button type="submit"
+                class="bg-amber-600 w-full py-3 text-white rounded-lg hover:bg-amber-700">
+            Login
+        </button>
+    </form>
+
+    <p class="text-center mt-4">
+        New user?
+        <a href="signup.html" class="text-amber-600">Create Account</a>
+    </p>
+</div>
+
+<script type="module" src="assets/js/login.js"></script>
+</body>
+</html>
