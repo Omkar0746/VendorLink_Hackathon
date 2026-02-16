@@ -1,7 +1,20 @@
+<!-- 
+  MARKETPLACE.HTML WITH RECOMMENDATION SYSTEM INTEGRATED
+  This is an example of how to integrate the recommendation system
+  into your existing marketplace.html file
+  
+  Key additions:
+  1. CSS link for recommendations
+  2. JS script for recommendations
+  3. Recommendations section HTML
+  4. Initialization script
+-->
+
 <!DOCTYPE html>
 <html lang="en" class="bg-gray-100 dark:bg-gray-900">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marketplace • VendorLink</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -9,6 +22,7 @@
     tailwind.config = { darkMode: "class" };
   </script>
 
+  <!-- ✨ ADD THIS: Recommendation System Styles -->
   <link rel="stylesheet" href="css/recommendations.css">
 
   <style>
@@ -64,6 +78,8 @@
 
 <body class="text-gray-900 dark:text-gray-100">
 
+<!-- Navigation & Header -->
+<!-- (Include your existing navbar code here) -->
 
 <!-- MAIN MARKETPLACE CONTENT -->
 <section class="max-w-7xl mx-auto px-4 py-8 md:py-10">
@@ -73,7 +89,7 @@
     Filter by category, price, supplier, availability, and more.
   </p>
 
-  <!-- PERSONALIZED RECOMMENDATIONS SECTION -->
+  <!-- ✨ ADD THIS: PERSONALIZED RECOMMENDATIONS SECTION -->
   <section class="recommendations-section">
     <div id="recommended-vendors">
       <div style="padding: 40px; text-align: center; color: #6b7280;">
@@ -82,6 +98,7 @@
     </div>
   </section>
 
+  <!-- Existing Marketplace Content -->
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
     <!-- LEFT SIDEBAR FILTERS -->
@@ -218,14 +235,14 @@
   </div>
 </div>
 
-<!-- JS FILES -->
-<!-- Socket.IO client (needed for realtime notifications) -->
-<script src="/socket.io/socket.io.js"></script>
+<!-- ✨ JS FILES -->
 <script type="module" src="assets/js/navbar.js"></script>
 <script type="module" src="assets/js/marketplace.js"></script>
 
-<!-- RECOMMENDATION SYSTEM SCRIPTS -->
+<!-- ✨ ADD THESE: Recommendation System Scripts -->
 <script src="assets/js/recommendations.js"></script>
+
+<!-- ✨ ADD THIS: Initialization Script -->
 <script>
   /**
    * Initialize Recommendation System
@@ -282,3 +299,55 @@
 
 </body>
 </html>
+
+<!-- 
+  ============================================================================
+  INTEGRATION CHECKLIST
+  ============================================================================
+  
+  ✓ Added: <link rel="stylesheet" href="css/recommendations.css">
+  ✓ Added: <section class="recommendations-section">...</section>
+  ✓ Added: <script src="assets/js/recommendations.js"></script>
+  ✓ Added: Initialization script for loading recommendations
+  
+  ============================================================================
+  NEXT STEPS
+  ============================================================================
+  
+  1. Copy this entire file as your new marketplace.html
+  2. Or manually add the marked sections to your existing marketplace.html:
+     - Search for "✨ ADD THIS" comments
+     - Copy CSS link, HTML section, and script imports
+  
+  3. Ensure files exist:
+     - frontend/css/recommendations.css
+     - frontend/assets/js/recommendations.js
+  
+  4. Test:
+     - Open marketplace in browser
+     - Log in with a test account
+     - Recommendations should load automatically
+  
+  5. Monitor console:
+     - Open DevTools → Console
+     - Look for "🎯 Initializing recommendations" message
+     - Check for any errors
+  
+  ============================================================================
+  TROUBLESHOOTING
+  ============================================================================
+  
+  Issue: "Recommendation system not initialized"
+  Solution: Ensure recommendations.js loads before initialization script
+  
+  Issue: "User not authenticated"
+  Solution: Make sure user is logged in (userId in localStorage)
+  
+  Issue: "No recommendations available"
+  Solution: User may be new - create test orders in database
+  
+  Issue: 404 on css/recommendations.css
+  Solution: Verify file exists at frontend/css/recommendations.css
+  
+  ============================================================================
+-->

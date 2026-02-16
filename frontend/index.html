@@ -41,7 +41,13 @@
 <body class="text-gray-900 dark:text-gray-100">
 
 <!-- AUTO-LOAD NAVBAR -->
-<script type="module" src="assets/js/navbar.js"></script>
+<script type="module" defer src="assets/js/navbar.js"></script>
+
+<!-- Socket.IO client (needed for realtime notifications) -->
+<script defer src="/socket.io/socket.io.js"></script>
+
+<!-- Load the debug helper that displays notifications as toasts -->
+<script defer src="assets/js/index.js"></script>
 
 <!-- PAGE CONTENT -->
 <main class="max-w-7xl mx-auto px-4 pt-10 pb-20">

@@ -1,9 +1,28 @@
 // controllers/productController.js
 const Product = require("../models/Product");
+const mongoose = require("mongoose");
+const mockDB = require("../config/mockDB");
 
 // 🔹 Public: get all products
 exports.getProducts = async (req, res) => {
   try {
+    // If MongoDB is not connected, return mock data for development/demo
+    if (!mongoose.connection || mongoose.connection.readyState !== 1) {
+      // Map mock vendors to a lightweight product-like response
+      const products = (mockDB.vendors || []).map((v) => ({
+        _id: v._id,
+        name: v.shopName,
+        supplier: { _id: v._id, name: v.shopName, email: v.email },
+        price: v.priceRange ? v.priceRange.min : 0,
+        image: v.imageUrl,
+        category: v.category,
+        inStock: true,
+        createdAt: v.createdAt,
+        description: v.description,
+      }));
+      return res.json(products);
+    }
+
     const products = await Product.find()
       .populate("supplier", "name email")
       .sort({ createdAt: -1 });
