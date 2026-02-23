@@ -1,0 +1,13 @@
+/* Smooth transitions across the whole UI */
+* {
+  transition: all 0.25s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #b47f00;
+  border-radius: 10px;
+}

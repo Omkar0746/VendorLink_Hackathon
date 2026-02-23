@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8" />
+  <title>Suppliers • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+
+  <style>
+    .filter-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: #d97706;
+      color: white;
+      border-color: #d97706;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+    <!-- NAVBAR START -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight">VendorLink</span>
+    </div>
+
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">
+        Dashboard
+      </a>
+    </div>
+
+    <div class="flex items-center gap-4">
+
+      <div id="roleSliderWrapper" class="hidden">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+        </label>
+      </div>
+
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown"
+             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+
+          <button id="logoutBtn"
+                  class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- NAVBAR END -->
+
+<script type="module" src="assets/js/navbar.js"></script>
+
+<section class="max-w-7xl mx-auto px-6 py-12">
+
+  <h1 class="text-4xl font-bold text-amber-600 mb-2">Top Suppliers</h1>
+  <p class="text-gray-500 dark:text-gray-400 mb-6">
+    Find verified vendors offering high-quality raw materials.
+  </p>
+
+  <!-- FILTERS START -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 mb-8">
+
+    <!-- Search -->
+    <div class="mb-4">
+      <input id="supplierSearch" 
+             class="w-full px-4 py-3 rounded-xl border dark:border-gray-700 dark:bg-gray-900 text-sm" 
+             placeholder="Search supplier name, shop name, category..." />
+    </div>
+
+    <!-- Category Chips -->
+    <div class="flex flex-wrap gap-2 mb-4" id="categoryChips">
+      <span class="filter-chip active" data-category="all">All</span>
+      <span class="filter-chip" data-category="Vegetables">Vegetables</span>
+      <span class="filter-chip" data-category="Spices">Spices</span>
+      <span class="filter-chip" data-category="Grains">Grains</span>
+      <span class="filter-chip" data-category="Packaging">Packaging</span>
+      <span class="filter-chip" data-category="Oil & Ghee">Oil & Ghee</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+      <!-- Location Filter -->
+      <select id="locationFilter" 
+              class="px-3 py-2 rounded-xl border dark:border-gray-700 dark:bg-gray-900 text-sm">
+        <option value="">All Locations</option>
+      </select>
+
+      <!-- Ratings Filter -->
+      <select id="ratingFilter" 
+              class="px-3 py-2 rounded-xl border dark:border-gray-700 dark:bg-gray-900 text-sm">
+        <option value="">Any Rating</option>
+        <option value="4.5">4.5 ★ & above</option>
+        <option value="4">4.0 ★ & above</option>
+        <option value="3.5">3.5 ★ & above</option>
+      </select>
+
+      <!-- Reset Filters -->
+      <button id="resetFilters"
+              class="px-3 py-2 bg-gray-200 dark:bg-gray-700 rounded-xl text-sm">
+        Reset Filters
+      </button>
+
+    </div>
+  </div>
+  <!-- FILTERS END -->
+
+  <div id="suppliersList" 
+       class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  </div>
+
+</section>
+
+<script type="module" src="assets/js/suppliers.js"></script>
+
+</body>
+</html>

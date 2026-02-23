@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supplier Dashboard • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900">
+
+<!-- Navbar -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<div class="max-w-6xl mx-auto p-6">
+  <h1 class="text-4xl font-bold text-amber-600 mb-6">Supplier Dashboard</h1>
+
+  <div class="grid grid-cols-2 gap-6 mb-10">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+      <p>Total Orders</p>
+      <h2 id="totalOrders" class="text-3xl font-bold">0</h2>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+      <p>Revenue</p>
+      <h2 id="revenue" class="text-3xl font-bold">₹0</h2>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-semibold mb-4">Add Product</h2>
+
+  <form id="addProductForm" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow space-y-4">
+    <input id="pname" placeholder="Product Name" class="w-full p-3 border rounded-lg">
+    <input id="pimage" placeholder="Image URL" class="w-full p-3 border rounded-lg">
+    <input id="pcategory" placeholder="Category" class="w-full p-3 border rounded-lg">
+    <input id="pprice" type="number" placeholder="Price" class="w-full p-3 border rounded-lg">
+
+    <button class="w-full bg-amber-600 text-white py-3 rounded-lg">Add Product</button>
+  </form>
+
+</div>
+
+<script type="module" src="assets/js/supplier_dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink • Smart Sourcing for Street Food Vendors</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+
+  <style>
+    #sliderWrapper {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    #smallSlider {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      animation: slideScroll 25s linear infinite;
+    }
+
+    #smallSlider img {
+      width: 200px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    @keyframes slideScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- AUTO-LOAD NAVBAR -->
+<script type="module" defer src="assets/js/navbar.js"></script>
+
+<!-- Socket.IO client (needed for realtime notifications) -->
+<script defer src="/socket.io/socket.io.js"></script>
+
+<!-- Load the debug helper that displays notifications as toasts -->
+<script defer src="assets/js/index.js"></script>
+
+<!-- PAGE CONTENT -->
+<main class="max-w-7xl mx-auto px-4 pt-10 pb-20">
+
+  <!-- Welcome + Slider Section -->
+  <section class="mt-6">
+    <h1 class="text-3xl font-extrabold">Welcome, Guest!</h1>
+    <p class="text-gray-600 dark:text-gray-300 mt-1">
+      Here's your daily overview to help you source smarter and save more.
+    </p>
+
+    <!-- SMALL SLIDESHOW (Continuous Scroll) -->
+    <div id="sliderWrapper" class="bg-white dark:bg-gray-800 p-4 rounded-xl mt-6 shadow">
+      <div id="smallSlider">
+
+        <!-- Duplicate images at end for seamless infinite loop -->
+        <img src="assets/Images/images1.jpeg">
+        <img src="assets/Images/images2.jpg">
+        <img src="assets/Images/Images4.jpg">
+        <img src="assets/Images/images5.jpeg">
+        <img src="assets/Images/images6.jpeg">
+        <img src="assets/Images/images7.webp">
+
+        <!-- DUPLICATED for infinite loop -->
+        <img src="assets/Images/images1.jpeg">
+        <img src="assets/Images/images2.jpg">
+        <img src="assets/Images/Images4.jpg">
+        <img src="assets/Images/images5.jpeg">
+        <img src="assets/Images/images6.jpeg">
+        <img src="assets/Images/images7.webp">
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Main Hero Section -->
+  <section class="grid md:grid-cols-2 gap-12 items-center mt-16">
+    <div>
+      <h1 class="text-5xl font-extrabold leading-tight">
+        Smart sourcing for <span class="text-amber-600">street food vendors</span>.
+      </h1>
+
+      <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+        Discover trusted suppliers, optimize costs with AI, and grow your business with smart analytics.
+      </p>
+
+      <div class="mt-6 flex gap-4">
+        <a href="marketplace.html"
+           class="px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700">
+          Explore Marketplace
+        </a>
+
+        <a href="signup.html"
+           class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700
+                  text-gray-700 dark:text-gray-200 font-semibold hover:border-amber-600">
+          Join VendorLink
+        </a>
+      </div>
+    </div>
+
+    <!-- Live Snapshot Box -->
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 space-y-4">
+      <h2 class="text-lg font-semibold mb-4">Live Snapshot</h2>
+
+      <div class="grid grid-cols-3 gap-4 text-center">
+
+        <div class="bg-amber-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Active Vendors</p>
+          <p class="text-2xl font-bold text-amber-600">120+</p>
+        </div>
+
+        <div class="bg-emerald-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Suppliers</p>
+          <p class="text-2xl font-bold text-emerald-600">45+</p>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Orders Per Day</p>
+          <p class="text-2xl font-bold text-indigo-600">300+</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink • Smart Sourcing for Street Food Vendors</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+</head>
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- Shared Navbar -->
+  <!-- (paste shared <nav> block here) -->
+  <!-- NAVBAR START -->
+  <!-- 👇👇👇 -->
+  <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <!-- LOGO -->
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight">VendorLink</span>
+    </div>
+
+    <!-- NAV LINKS -->
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">
+        Dashboard
+      </a>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="flex items-center gap-4">
+
+      <!-- ROLE SLIDER (after login) -->
+      <div id="roleSliderWrapper" class="hidden">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+        </label>
+      </div>
+
+      <!-- Theme -->
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <!-- BEFORE LOGIN -->
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <!-- AFTER LOGIN -->
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown"
+             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+          <button id="logoutBtn" class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <!-- NAVBAR END -->
+
+  <main class="max-w-7xl mx-auto px-4 py-10">
+    <!-- Hero -->
+    <section class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Smart sourcing for <span class="text-amber-600">street food vendors</span>.
+        </h1>
+        <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+          Discover trusted suppliers, optimize your raw material costs, and grow your business with data-driven insights.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4">
+          <a href="marketplace.html"
+             class="px-5 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700">
+            Explore Marketplace
+          </a>
+          <a href="signup.html"
+             class="px-5 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-semibold hover:border-amber-600">
+            Join as Vendor / Supplier
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 space-y-4">
+        <h2 class="text-lg font-semibold mb-2">Live snapshot</h2>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="bg-amber-50 dark:bg-gray-900 rounded-xl p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400">Active Vendors</p>
+            <p class="text-2xl font-bold text-amber-600">120+</p>
+          </div>
+          <div class="bg-emerald-50 dark:bg-gray-900 rounded-xl p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400">Suppliers</p>
+            <p class="text-2xl font-bold text-emerald-600">45+</p>
+          </div>
+          <div class="bg-indigo-50 dark:bg-gray-900 rounded-xl p-3">
+            <p class="text-xs text-gray-500 dark:text-gray-400">Orders / day</p>
+            <p class="text-2xl font-bold text-indigo-600">300+</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mt-16">
+      <h2 class="text-2xl font-bold mb-6">Why VendorLink?</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5">
+          <h3 class="font-semibold mb-2">Smart Marketplace</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">
+            Compare suppliers by price, quality, and reliability — all in one place.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5">
+          <h3 class="font-semibold mb-2">Transparent Orders</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">
+            Place and track your raw material orders with full visibility.
+          </p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5">
+          <h3 class="font-semibold mb-2">Analytics That Matter</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">
+            Understand your monthly spending, top suppliers, and more.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/navbar.js"></script>
+</body>
+</html>

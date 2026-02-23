@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink • Smart Sourcing for Street Food Vendors</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+
+  <style>
+    .slider-img {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 9999px;
+      background-color: #d1d5db;
+      cursor: pointer;
+    }
+    .dot.active {
+      background-color: #f59e0b;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<!-- HERO SLIDESHOW -->
+<section class="max-w-7xl mx-auto px-4 mt-10">
+  <div class="relative">
+
+    <!-- Image Container -->
+    <img id="sliderImage" src="assets/images/slide1.jpg" class="slider-img shadow-xl">
+
+    <!-- Dots Indicator -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3" id="sliderDots"></div>
+  </div>
+</section>
+
+<!-- HOME CONTENT -->
+<main class="max-w-7xl mx-auto px-4 py-16">
+
+  <section class="grid md:grid-cols-2 gap-12 items-center">
+
+    <div>
+      <h1 class="text-5xl font-extrabold leading-tight">
+        Smart sourcing for <span class="text-amber-600">street food vendors</span>.
+      </h1>
+      <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+        Discover trusted suppliers, optimize costs with AI, and grow your business with smart analytics.
+      </p>
+
+      <div class="mt-6 flex gap-4">
+        <a href="marketplace.html"
+           class="px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700">
+          Explore Marketplace
+        </a>
+
+        <a href="signup.html"
+           class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700
+                  text-gray-700 dark:text-gray-200 font-semibold hover:border-amber-600">
+          Join VendorLink
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 space-y-4">
+      <h2 class="text-lg font-semibold mb-4">Live Snapshot</h2>
+
+      <div class="grid grid-cols-3 gap-4 text-center">
+
+        <div class="bg-amber-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Active Vendors</p>
+          <p class="text-2xl font-bold text-amber-600">120+</p>
+        </div>
+
+        <div class="bg-emerald-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Suppliers</p>
+          <p class="text-2xl font-bold text-emerald-600">45+</p>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Orders Per Day</p>
+          <p class="text-2xl font-bold text-indigo-600">300+</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- SLIDER JS -->
+<script>
+  const images = [
+    "frontend/images/slide1.jpg",
+    "frontend/images/slide2.jpg",
+    "frontend/images/slide4.jpg",
+    "frontend/images/slide5.jpeg",
+    "frontend/images/slide6.jpeg",
+    "frontend/images/slide7.webp"
+  ];
+
+  let index = 0;
+  const imgElement = document.getElementById("sliderImage");
+  const dotContainer = document.getElementById("sliderDots");
+
+  // Create dots
+  images.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    dot.addEventListener("click", () => goToSlide(i));
+    dotContainer.appendChild(dot);
+  });
+
+  function updateDots() {
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+  }
+
+  function goToSlide(i) {
+    index = i;
+    imgElement.src = images[index];
+    updateDots();
+  }
+
+  function nextSlide() {
+    index = (index + 1) % images.length;
+    imgElement.src = images[index];
+    updateDots();
+  }
+
+  updateDots();
+  setInterval(nextSlide, 3500);
+</script>
+
+</body>
+</html>

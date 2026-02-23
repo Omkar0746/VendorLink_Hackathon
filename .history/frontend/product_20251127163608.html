@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Details • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+</head>
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- NAVBAR (same as above) -->
+  <!-- ... copy navbar block here ... -->
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <img id="p-image"
+             class="w-full h-72 object-cover rounded-2xl shadow-lg bg-gray-200 dark:bg-gray-800"
+             src="https://via.placeholder.com/600x400" alt="Product image">
+      </div>
+
+      <div>
+        <h1 id="p-name" class="text-3xl font-bold mb-2">Product Name</h1>
+        <p id="p-category" class="text-sm text-gray-500 dark:text-gray-400 mb-4">Category</p>
+        <p id="p-price" class="text-2xl font-extrabold text-amber-600 mb-6">₹0</p>
+
+        <button id="orderBtn"
+                class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-semibold shadow">
+          Order Now
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="assets/js/product.js"></script>
+  <script type="module" src="assets/js/navbar.js"></script>
+</body>
+</html>

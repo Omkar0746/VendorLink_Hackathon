@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Supplier Dashboard • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+</head>
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- NAVBAR (same as above) -->
+  <!-- ... copy navbar block here ... -->
+
+  <main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <h1 class="text-2xl font-bold mb-2">Supplier Dashboard</h1>
+
+    <!-- Analytics -->
+    <section>
+      <h2 class="text-lg font-semibold mb-3">Quick Analytics</h2>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 text-center">
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total Orders</p>
+          <p id="totalOrders" class="text-3xl font-extrabold text-amber-600 mt-2">0</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 text-center">
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
+          <p id="revenue" class="text-3xl font-extrabold text-green-600 mt-2">₹0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add product -->
+    <section class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5">
+      <h2 class="text-lg font-semibold mb-3">Add Product</h2>
+      <form id="addProductForm" class="grid md:grid-cols-4 gap-3">
+        <input id="pName" type="text" placeholder="Name"
+               class="p-2 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+        <input id="pPrice" type="number" placeholder="Price"
+               class="p-2 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+        <input id="pImage" type="text" placeholder="Image URL"
+               class="p-2 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+        <input id="pCategory" type="text" placeholder="Category"
+               class="p-2 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
+        <button
+          class="md:col-span-4 bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg font-semibold mt-1">
+          Add Product
+        </button>
+      </form>
+    </section>
+
+    <!-- Product list -->
+    <section class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5">
+      <h2 class="text-lg font-semibold mb-3">My Products</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+            <tr>
+              <th class="p-3 text-left">Name</th>
+              <th class="p-3 text-left">Price</th>
+              <th class="p-3 text-left">Category</th>
+              <th class="p-3 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productTable" class="divide-y divide-gray-100 dark:divide-gray-700">
+            <!-- Filled by supplier.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/supplier.js"></script>
+  <script type="module" src="assets/js/navbar.js"></script>
+</body>
+</html>

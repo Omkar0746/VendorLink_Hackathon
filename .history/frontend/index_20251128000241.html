@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8" />
+  <title>VendorLink • Smart Sourcing</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+    };
+  </script>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- Navbar -->
+  <script type="module" src="assets/js/navbar.js"></script>
+
+  <!-- HERO SECTION -->
+  <section class="max-w-7xl mx-auto px-10 py-20 grid grid-cols-1 md:grid-cols-2 gap-10">
+
+    <!-- Left Section -->
+    <div>
+      <h1 class="text-5xl font-extrabold leading-snug">
+        Smart sourcing for
+        <span class="text-amber-600">street food vendors.</span>
+      </h1>
+
+      <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+        Discover trusted suppliers, optimize costs, and grow your
+        business with smart analytics.
+      </p>
+
+      <div class="flex space-x-4 mt-8">
+        <a href="marketplace.html">
+          <button class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-xl font-semibold shadow">
+            Explore Marketplace
+          </button>
+        </a>
+
+        <a href="signup.html">
+          <button class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-6 py-3 rounded-xl font-semibold hover:shadow">
+            Join VendorLink
+          </button>
+        </a>
+      </div>
+
+      <!-- ⭐ NEW AI PREDICTION BUTTON -->
+      <a href="ai_predict.html">
+        <button class="mt-4 px-6 py-3 font-semibold bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow">
+          🔮 AI Price Prediction
+        </button>
+      </a>
+    </div>
+
+    <!-- Right Live Snapshot Card -->
+    <div class="flex justify-center">
+      <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-8 w-full max-w-md">
+
+        <h3 class="text-xl font-bold mb-4">Live Snapshot</h3>
+
+        <div class="space-y-4">
+
+          <div class="flex justify-between bg-yellow-50 dark:bg-yellow-900 p-4 rounded-xl">
+            <span class="font-medium">Active Vendors</span>
+            <span class="text-amber-600 font-extrabold text-xl">120+</span>
+          </div>
+
+          <div class="flex justify-between bg-green-50 dark:bg-green-900 p-4 rounded-xl">
+            <span class="font-medium">Suppliers</span>
+            <span class="text-green-600 font-extrabold text-xl">45+</span>
+          </div>
+
+          <div class="flex justify-between bg-indigo-50 dark:bg-indigo-900 p-4 rounded-xl">
+            <span class="font-medium">Orders Per Day</span>
+            <span class="text-indigo-600 font-extrabold text-xl">300+</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</body>
+</html>

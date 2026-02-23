@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+</head>
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- NAVBAR (same as above) -->
+  <!-- ... copy navbar block here ... -->
+
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">My Profile</h1>
+
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 space-y-4">
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Name</p>
+        <p id="prof-name" class="text-lg font-semibold">-</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+        <p id="prof-email" class="text-lg font-semibold">-</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Role</p>
+        <p id="prof-role" class="text-lg font-semibold capitalize">-</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { getUser } from "./assets/js/utils.js";
+    import "./assets/js/navbar.js";
+
+    const user = getUser();
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("prof-name").textContent = user.name || "-";
+      document.getElementById("prof-email").textContent = user.email || "-";
+      document.getElementById("prof-role").textContent = user.role || "-";
+    }
+  </script>
+</body>
+</html>
