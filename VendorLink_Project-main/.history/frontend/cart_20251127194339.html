@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Cart • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<script type="module" src="assets/js/navbar.js"></script>
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold text-amber-600 mb-6">Your Cart</h1>
+
+  <div id="cartItems" class="space-y-5"></div>
+
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow mt-6 flex justify-between">
+    <h2 class="text-2xl font-bold">Total:</h2>
+    <h2 id="totalAmount" class="text-2xl font-bold">₹0</h2>
+  </div>
+
+  <button class="w-full bg-amber-600 text-white py-3 mt-6 rounded-lg hover:bg-amber-700">
+    Place Order
+  </button>
+</div>
+
+<script>
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const container = document.getElementById("cartItems");
+  const totalLabel = document.getElementById("totalAmount");
+
+  function renderCart() {
+    let total = 0;
+    container.innerHTML = "";
+
+    cartItems.forEach(item => {
+      total += item.price * item.qty;
+
+      container.innerHTML += `
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-semibold">${item.name}</h3>
+            <p class="text-gray-600 dark:text-gray-300">₹${item.price} × ${item.qty}</p>
+          </div>
+          <h3 class="text-lg font-bold">₹${item.price * item.qty}</h3>
+        </div>
+      `;
+    });
+
+    totalLabel.textContent = "₹" + total;
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>

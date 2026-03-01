@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketplace • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+
+  <style>
+    .active-filter {
+      background: #d97706 !important;
+      color: white !important;
+    }
+  </style>
+
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- Navbar -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<section class="max-w-7xl mx-auto px-6 py-10">
+
+  <h1 class="text-4xl font-bold text-amber-600 mb-8">Marketplace</h1>
+
+  <!-- Search + Sort -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+
+    <!-- Search -->
+    <input id="searchBar" placeholder="Search raw materials..." 
+      class="flex-1 p-3 rounded-xl border dark:bg-gray-800" />
+
+    <!-- Sort -->
+    <select id="sortSelect" 
+      class="p-3 rounded-xl border dark:bg-gray-800">
+      <option value="">Sort By</option>
+      <option value="low">Price: Low → High</option>
+      <option value="high">Price: High → Low</option>
+    </select>
+
+  </div>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-3 mb-8">
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="all">All</button>
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="Vegetables">Vegetables</button>
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="Grains">Grains</button>
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="Spices">Spices</button>
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="Packaging">Packaging</button>
+    <button class="filterBtn bg-gray-200 px-4 py-2 rounded-lg" data-category="Oil & Ghee">Oil & Ghee</button>
+  </div>
+
+  <!-- Product Grid -->
+  <div id="productList" class="grid md:grid-cols-3 gap-6"></div>
+
+</section>
+
+<!-- Supplier Contact Popup Modal -->
+<div id="contactModal"
+     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-6">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-md shadow-lg">
+    <h2 class="text-xl font-bold mb-4" id="supplierName">Supplier</h2>
+    <p id="supplierLocation" class="text-gray-500 mb-3"></p>
+    <p id="supplierPhone" class="font-semibold text-gray-800 dark:text-gray-200"></p>
+
+    <button onclick="closeModal()"
+            class="w-full mt-6 bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700">
+      Close
+    </button>
+  </div>
+</div>
+
+<script type="module">
+
+  // --- SAMPLE PRODUCT DATA ---
+  let products = [
+    { name:"Fresh Tomatoes", category:"Vegetables", price:38, image:"https://images.unsplash.com/photo-1601333141735-b1c4f1cd5a02", supplierName:"Mumbai Fresh Veggies", supplierPhone:"9876543210", supplierLocation:"Dadar Market" },
+    { name:"Red Onions", category:"Vegetables", price:26, image:"https://images.unsplash.com/photo-1615485290382-49bb0a650a07", supplierName:"Farm to Home Suppliers", supplierPhone:"9876543001", supplierLocation:"Byculla Market" },
+    { name:"Potatoes (Premium)", category:"Vegetables", price:22, image:"https://images.unsplash.com/photo-1569058242253-92a9c755a3aa", supplierName:"Veggie Basket Co.", supplierPhone:"9988776655", supplierLocation:"Sion Market" },
+    { name:"Wheat Flour (Atta)", category:"Grains", price:45, image:"https://images.unsplash.com/photo-1615485290590-3af01f7cdb14", supplierName:"Pure Grains Hub", supplierPhone:"8765432109", supplierLocation:"Kurla Market" },
+    { name:"Rice – Premium Basmati", category:"Grains", price:89, image:"https://images.unsplash.com/photo-1615485364632-92e2bca2cfa0", supplierName:"Indian Rice Traders", supplierPhone:"9988001122", supplierLocation:"Crawford Market" },
+    { name:"Cooking Oil – Sunflower", category:"Oil & Ghee", price:152, image:"https://images.unsplash.com/photo-1589883661928-71a9da3a3db5", supplierName:"Healthy Oils Pvt Ltd", supplierPhone:"9911223344", supplierLocation:"Andheri" },
+    { name:"Coriander Powder", category:"Spices", price:58, image:"https://images.unsplash.com/photo-1623330188314-66e4ae79e927", supplierName:"Premium Spices Hub", supplierPhone:"9922334455", supplierLocation:"Crawford Market" },
+    { name:"Turmeric Powder", category:"Spices", price:62, image:"https://images.unsplash.com/photo-1623330170402-7a6c2e2da975", supplierName:"Premium Spices Hub", supplierPhone:"9922334455", supplierLocation:"Crawford Market" },
+    { name:"Fresh Green Chillies", category:"Vegetables", price:40, image:"https://images.unsplash.com/photo-1592407926045-43d9440c63a7", supplierName:"Mumbai Fresh Veggies", supplierPhone:"9876543210", supplierLocation:"Dadar Market" },
+    { name:"Disposable Plates (50 pcs)", category:"Packaging", price:75, image:"https://images.unsplash.com/photo-1563898785381-5cc0f4076142", supplierName:"Quality Packaging Co.", supplierPhone:"8899776655", supplierLocation:"Saki Naka" }
+  ];
+
+  const container = document.getElementById("productList");
+  const searchBar = document.getElementById("searchBar");
+  const sortSelect = document.getElementById("sortSelect");
+  const filterButtons = document.querySelectorAll(".filterBtn");
+
+  let activeProducts = [...products];
+
+  // --- RENDER PRODUCTS ---
+  function renderProducts(list) {
+    container.innerHTML = "";
+
+    list.forEach(p => {
+      container.innerHTML += `
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="${p.image}" class="rounded-lg h-40 w-full object-cover mb-4">
+
+          <h2 class="text-xl font-semibold">${p.name}</h2>
+          <p class="text-gray-500 dark:text-gray-300">${p.category}</p>
+          <p class="mt-2 text-lg font-bold text-amber-600">₹${p.price}/kg</p>
+
+          <button onclick="openModal('${p.supplierName}','${p.supplierPhone}','${p.supplierLocation}')"
+            class="mt-3 text-sm text-blue-600 underline">
+            View Supplier
+          </button>
+
+          <button 
+            onclick="addToCart('${p.name}', ${p.price})"
+            class="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 mt-4">
+            Add to Cart
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  // --- SEARCH ---
+  searchBar.addEventListener("input", () => {
+    const q = searchBar.value.toLowerCase();
+    const filtered = activeProducts.filter(p => p.name.toLowerCase().includes(q));
+    renderProducts(filtered);
+  });
+
+  // --- SORT ---
+  sortSelect.addEventListener("change", () => {
+    const v = sortSelect.value;
+
+    if (v === "low") activeProducts.sort((a, b) => a.price - b.price);
+    else if (v === "high") activeProducts.sort((a, b) => b.price - a.price);
+
+    renderProducts(activeProducts);
+  });
+
+  // --- FILTER ---
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(b => b.classList.remove("active-filter"));
+      btn.classList.add("active-filter");
+
+      const cat = btn.dataset.category;
+
+      activeProducts = cat === "all" 
+        ? [...products] 
+        : products.filter(p => p.category === cat);
+
+      renderProducts(activeProducts);
+    });
+  });
+
+  // --- ADD TO CART ---
+  window.addToCart = (name, price) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name, price, qty: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  };
+
+  // --- SUPPLIER POPUP ---
+  window.openModal = (name, phone, location) => {
+    document.getElementById("supplierName").textContent = name;
+    document.getElementById("supplierPhone").textContent = "📞 " + phone;
+    document.getElementById("supplierLocation").textContent = "📍 " + location;
+    document.getElementById("contactModal").classList.remove("hidden");
+  };
+
+  window.closeModal = () => {
+    document.getElementById("contactModal").classList.add("hidden");
+  };
+
+  // INITIAL LOAD
+  renderProducts(activeProducts);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketplace • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" };
+  </script>
+
+  <style>
+    .nav-link { color:#444; text-decoration:none; }
+    .nav-link:hover { color:#d97706; }
+    .dark .nav-link { color:#ddd; }
+
+    .btn-outline {
+      padding:6px 14px; border:1px solid #d97706; color:#d97706; border-radius:8px;
+    }
+    .btn-filled {
+      background:#d97706; color:white; padding:6px 14px; border-radius:8px;
+    }
+    .profile-btn {
+      padding:6px 14px; background:#f3f4f6; border-radius:8px;
+    }
+    .dropdown-item {
+      padding:10px 15px; display:block; text-align:left; font-size:0.9rem;
+      color:#4b5563;
+    }
+    .dropdown-item:hover { background:#f5f5f5; }
+    .toggle-checkbox { width:40px; height:20px; accent-color:#d97706; }
+    .theme-btn { padding:6px; background:#e5e7eb; border-radius:6px; }
+
+    .filter-chip {
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:0.8rem;
+      cursor:pointer;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+    }
+    .filter-chip.active {
+      background:#d97706;
+      color:white;
+      border-color:#d97706;
+    }
+    .tag-pill {
+      font-size:0.7rem;
+      background:#fef3c7;
+      color:#92400e;
+      padding:3px 8px;
+      border-radius:999px;
+      margin-right:4px;
+    }
+    .badge-stock {
+      font-size:0.7rem;
+      padding:3px 8px;
+      border-radius:999px;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight">VendorLink</span>
+    </div>
+
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">
+        Dashboard
+      </a>
+    </div>
+
+    <div class="flex items-center gap-4">
+
+      <div id="roleSliderWrapper" class="hidden">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+        </label>
+      </div>
+
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown"
+             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+          <button id="logoutBtn" class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN MARKETPLACE CONTENT -->
+<section class="max-w-7xl mx-auto px-4 py-8 md:py-10">
+
+  <h1 class="text-3xl md:text-4xl font-bold text-amber-600 mb-2">Raw Material Marketplace</h1>
+  <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+    Filter by category, price, supplier, availability, and more.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+    <!-- LEFT SIDEBAR FILTERS -->
+    <aside class="md:col-span-1 bg-white dark:bg-gray-800 rounded-2xl shadow p-4 space-y-5 h-max sticky top-24">
+
+      <!-- Search -->
+      <div>
+        <label class="text-xs font-semibold text-gray-500">Search</label>
+        <input id="searchBar"
+               placeholder="Tomato, rice, oil..."
+               class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                      bg-gray-50 dark:bg-gray-900 text-sm" />
+      </div>
+
+      <!-- Category -->
+      <div>
+        <p class="text-xs font-semibold text-gray-500 mb-2">Category</p>
+        <div id="categoryChips" class="flex flex-wrap gap-2 text-xs">
+          <button class="filter-chip active" data-category="all">All</button>
+          <button class="filter-chip" data-category="Vegetables">Vegetables</button>
+          <button class="filter-chip" data-category="Grains">Grains</button>
+          <button class="filter-chip" data-category="Spices">Spices</button>
+          <button class="filter-chip" data-category="Oil & Ghee">Oil & Ghee</button>
+          <button class="filter-chip" data-category="Packaging">Packaging</button>
+        </div>
+      </div>
+
+      <!-- Price Range -->
+      <div>
+        <p class="text-xs font-semibold text-gray-500 mb-2">Price Range (₹)</p>
+        <div class="flex gap-2">
+          <input id="priceMin" type="number" placeholder="Min"
+                 class="w-1/2 px-2 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                        bg-gray-50 dark:bg-gray-900 text-xs" />
+          <input id="priceMax" type="number" placeholder="Max"
+                 class="w-1/2 px-2 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                        bg-gray-50 dark:bg-gray-900 text-xs" />
+        </div>
+      </div>
+
+      <!-- Supplier -->
+      <div>
+        <p class="text-xs font-semibold text-gray-500 mb-2">Supplier</p>
+        <select id="supplierSelect"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                       bg-gray-50 dark:bg-gray-900 text-xs">
+          <option value="">All suppliers</option>
+        </select>
+      </div>
+
+      <!-- Rating -->
+      <div>
+        <p class="text-xs font-semibold text-gray-500 mb-2">Minimum Rating</p>
+        <select id="ratingSelect"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                       bg-gray-50 dark:bg-gray-900 text-xs">
+          <option value="">Any rating</option>
+          <option value="4.5">4.5 ★ & above</option>
+          <option value="4">4.0 ★ & above</option>
+          <option value="3.5">3.5 ★ & above</option>
+        </select>
+      </div>
+
+      <!-- Availability -->
+      <div class="flex items-center justify-between">
+        <label class="text-xs font-semibold text-gray-500">In Stock only</label>
+        <input id="inStockOnly" type="checkbox" class="toggle-checkbox" />
+      </div>
+
+      <!-- Tags -->
+      <div>
+        <p class="text-xs font-semibold text-gray-500 mb-2">Tags</p>
+        <div class="flex flex-wrap gap-2 text-xs" id="tagFilters">
+          <label class="flex items-center gap-1">
+            <input type="checkbox" value="Organic" class="tagFilterInput">
+            <span>Organic</span>
+          </label>
+          <label class="flex items-center gap-1">
+            <input type="checkbox" value="Bulk" class="tagFilterInput">
+            <span>Bulk</span>
+          </label>
+          <label class="flex items-center gap-1">
+            <input type="checkbox" value="Daily-use" class="tagFilterInput">
+            <span>Daily-use</span>
+          </label>
+          <label class="flex items-center gap-1">
+            <input type="checkbox" value="Premium" class="tagFilterInput">
+            <span>Premium</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sort & Clear -->
+      <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-xs font-semibold text-gray-500 mb-2">Sort By</p>
+        <select id="sortSelect"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700
+                       bg-gray-50 dark:bg-gray-900 text-xs mb-3">
+          <option value="">Default</option>
+          <option value="low">Price: Low → High</option>
+          <option value="high">Price: High → Low</option>
+        </select>
+
+        <button id="clearFilters"
+                class="w-full text-xs border border-gray-300 rounded-xl py-2 hover:bg-gray-100
+                       dark:hover:bg-gray-800">
+          Clear all filters
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- PRODUCT GRID -->
+    <div class="md:col-span-3">
+      <div id="productList" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUPPLIER CONTACT MODAL -->
+<div id="contactModal"
+     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center px-4">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 max-w-md w-full">
+    <h2 id="modalSupplierName" class="text-xl font-bold mb-2"></h2>
+    <p id="modalSupplierLocation" class="text-sm text-gray-500 mb-2"></p>
+    <p id="modalSupplierPhone" class="text-sm font-semibold mb-4"></p>
+    <p class="text-xs text-gray-500">Contact the supplier directly for bulk pricing and delivery details.</p>
+
+    <button onclick="closeModal()"
+            class="mt-4 w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg">
+      Close
+    </button>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<script>
+// === SAMPLE PRODUCT DATA WITH EXTRA FIELDS ===
+const allProducts = [
+  { name:"Fresh Tomatoes", category:"Vegetables", price:38, image:"https://images.unsplash.com/photo-1601333141735-b1c4f1cd5a02", supplierName:"Mumbai Fresh Veggies", supplierPhone:"9876543210", supplierLocation:"Dadar Market", rating:4.4, inStock:true, tags:["Daily-use","Bulk"] },
+  { name:"Red Onions", category:"Vegetables", price:26, image:"https://images.unsplash.com/photo-1615485290382-49bb0a650a07", supplierName:"Farm to Home Suppliers", supplierPhone:"9876543001", supplierLocation:"Byculla Market", rating:4.2, inStock:true, tags:["Daily-use"] },
+  { name:"Potatoes (Premium)", category:"Vegetables", price:22, image:"https://images.unsplash.com/photo-1569058242253-92a9c755a3aa", supplierName:"Veggie Basket Co.", supplierPhone:"9988776655", supplierLocation:"Sion Market", rating:4.7, inStock:true, tags:["Bulk","Daily-use"] },
+  { name:"Wheat Flour (Atta)", category:"Grains", price:45, image:"https://images.unsplash.com/photo-1615485290590-3af01f7cdb14", supplierName:"Pure Grains Hub", supplierPhone:"8765432109", supplierLocation:"Kurla Market", rating:4.5, inStock:true, tags:["Daily-use","Organic"] },
+  { name:"Rice – Premium Basmati", category:"Grains", price:89, image:"https://images.unsplash.com/photo-1615485364632-92e2bca2cfa0", supplierName:"Indian Rice Traders", supplierPhone:"9988001122", supplierLocation:"Crawford Market", rating:4.8, inStock:true, tags:["Premium","Bulk"] },
+  { name:"Cooking Oil – Sunflower", category:"Oil & Ghee", price:152, image:"https://images.unsplash.com/photo-1589883661928-71a9da3a3db5", supplierName:"Healthy Oils Pvt Ltd", supplierPhone:"9911223344", supplierLocation:"Andheri", rating:4.1, inStock:false, tags:["Daily-use"] },
+  { name:"Coriander Powder", category:"Spices", price:58, image:"https://images.unsplash.com/photo-1623330188314-66e4ae79e927", supplierName:"Premium Spices Hub", supplierPhone:"9922334455", supplierLocation:"Crawford Market", rating:4.6, inStock:true, tags:["Organic","Premium"] },
+  { name:"Turmeric Powder", category:"Spices", price:62, image:"https://images.unsplash.com/photo-1623330170402-7a6c2e2da975", supplierName:"Premium Spices Hub", supplierPhone:"9922334455", supplierLocation:"Crawford Market", rating:4.7, inStock:true, tags:["Organic","Premium"] },
+  { name:"Fresh Green Chillies", category:"Vegetables", price:40, image:"https://images.unsplash.com/photo-1592407926045-43d9440c63a7", supplierName:"Mumbai Fresh Veggies", supplierPhone:"9876543210", supplierLocation:"Dadar Market", rating:4.3, inStock:true, tags:["Daily-use"] },
+  { name:"Disposable Plates (50 pcs)", category:"Packaging", price:75, image:"https://images.unsplash.com/photo-1563898785381-5cc0f4076142", supplierName:"Quality Packaging Co.", supplierPhone:"8899776655", supplierLocation:"Saki Naka", rating:4.0, inStock:true, tags:["Bulk"] },
+];
+
+let filteredProducts = [...allProducts];
+
+// === DOM ELEMENTS ===
+const productListEl = document.getElementById("productList");
+const searchBarEl = document.getElementById("searchBar");
+const categoryChipsEl = document.getElementById("categoryChips");
+const priceMinEl = document.getElementById("priceMin");
+const priceMaxEl = document.getElementById("priceMax");
+const supplierSelectEl = document.getElementById("supplierSelect");
+const ratingSelectEl = document.getElementById("ratingSelect");
+const inStockOnlyEl = document.getElementById("inStockOnly");
+const sortSelectEl = document.getElementById("sortSelect");
+const clearFiltersEl = document.getElementById("clearFilters");
+const tagFilterInputs = document.querySelectorAll(".tagFilterInput");
+
+// === INIT SUPPLIER DROPDOWN ===
+const uniqueSuppliers = [...new Set(allProducts.map(p => p.supplierName))];
+uniqueSuppliers.forEach(name => {
+  const opt = document.createElement("option");
+  opt.value = name;
+  opt.textContent = name;
+  supplierSelectEl.appendChild(opt);
+});
+
+// === RENDER PRODUCTS ===
+function renderProducts(list) {
+  productListEl.innerHTML = "";
+
+  if (!list.length) {
+    productListEl.innerHTML = `<p class="text-sm text-gray-500">No products match your filters.</p>`;
+    return;
+  }
+
+  list.forEach(p => {
+    const tagsHTML = p.tags.map(t => `<span class="tag-pill">${t}</span>`).join("");
+
+    productListEl.innerHTML += `
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow hover:shadow-lg transition p-4 flex flex-col">
+        <img src="${p.image}" class="rounded-xl h-40 w-full object-cover mb-4">
+
+        <div class="flex justify-between items-start mb-1">
+          <h2 class="text-lg font-semibold">${p.name}</h2>
+          <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-lg">
+            ★ ${p.rating.toFixed(1)}
+          </span>
+        </div>
+
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">${p.category}</p>
+
+        <p class="text-xl font-bold text-amber-600 mb-1">₹${p.price}/kg</p>
+
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500">Supplier: ${p.supplierName}</span>
+          <span class="badge-stock ${p.inStock ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-600"}">
+            ${p.inStock ? "In stock" : "Out of stock"}
+          </span>
+        </div>
+
+        <div class="mb-3">${tagsHTML}</div>
+
+        <button
+          onclick="openModal('${p.supplierName}','${p.supplierPhone}','${p.supplierLocation}')"
+          class="text-xs text-blue-600 underline mb-2 text-left">
+          View supplier details
+        </button>
+
+        <button
+          onclick="addToCart('${p.name}', ${p.price})"
+          class="mt-auto w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg text-sm">
+          Add to Cart
+        </button>
+      </div>
+    `;
+  });
+}
+
+// === APPLY FILTERS + SORT ===
+function applyFilters() {
+  let list = [...allProducts];
+
+  const q = searchBarEl.value.trim().toLowerCase();
+  if (q) {
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+    );
+  }
+
+  const activeChip = categoryChipsEl.querySelector(".filter-chip.active");
+  const activeCategory = activeChip ? activeChip.dataset.category : "all";
+  if (activeCategory !== "all") {
+    list = list.filter(p => p.category === activeCategory);
+  }
+
+  const min = Number(priceMinEl.value);
+  const max = Number(priceMaxEl.value);
+  if (!isNaN(min) && min > 0) {
+    list = list.filter(p => p.price >= min);
+  }
+  if (!isNaN(max) && max > 0) {
+    list = list.filter(p => p.price <= max);
+  }
+
+  const supplier = supplierSelectEl.value;
+  if (supplier) {
+    list = list.filter(p => p.supplierName === supplier);
+  }
+
+  const minRating = Number(ratingSelectEl.value);
+  if (minRating) {
+    list = list.filter(p => p.rating >= minRating);
+  }
+
+  if (inStockOnlyEl.checked) {
+    list = list.filter(p => p.inStock);
+  }
+
+  const selectedTags = [...tagFilterInputs]
+    .filter(i => i.checked)
+    .map(i => i.value);
+  if (selectedTags.length) {
+    list = list.filter(p =>
+      selectedTags.every(t => p.tags.includes(t))
+    );
+  }
+
+  const sortVal = sortSelectEl.value;
+  if (sortVal === "low") {
+    list.sort((a, b) => a.price - b.price);
+  } else if (sortVal === "high") {
+    list.sort((a, b) => b.price - a.price);
+  }
+
+  filteredProducts = list;
+  renderProducts(filteredProducts);
+}
+
+// === EVENT LISTENERS ===
+searchBarEl.addEventListener("input", applyFilters);
+priceMinEl.addEventListener("input", applyFilters);
+priceMaxEl.addEventListener("input", applyFilters);
+supplierSelectEl.addEventListener("change", applyFilters);
+ratingSelectEl.addEventListener("change", applyFilters);
+inStockOnlyEl.addEventListener("change", applyFilters);
+sortSelectEl.addEventListener("change", applyFilters);
+
+categoryChipsEl.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("filter-chip")) return;
+  categoryChipsEl.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+  e.target.classList.add("active");
+  applyFilters();
+});
+
+tagFilterInputs.forEach(i => i.addEventListener("change", applyFilters));
+
+clearFiltersEl.addEventListener("click", () => {
+  searchBarEl.value = "";
+  priceMinEl.value = "";
+  priceMaxEl.value = "";
+  supplierSelectEl.value = "";
+  ratingSelectEl.value = "";
+  inStockOnlyEl.checked = false;
+  sortSelectEl.value = "";
+  tagFilterInputs.forEach(i => (i.checked = false));
+  categoryChipsEl.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+  categoryChipsEl.querySelector("[data-category='all']").classList.add("active");
+  applyFilters();
+});
+
+// === ADD TO CART ===
+window.addToCart = (name, price) => {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.push({ name, price, qty: 1 });
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Added to cart!");
+};
+
+// === SUPPLIER MODAL ===
+window.openModal = (name, phone, location) => {
+  document.getElementById("modalSupplierName").textContent = name;
+  document.getElementById("modalSupplierPhone").textContent = "📞 " + phone;
+  document.getElementById("modalSupplierLocation").textContent = "📍 " + location;
+  document.getElementById("contactModal").classList.remove("hidden");
+};
+window.closeModal = () => {
+  document.getElementById("contactModal").classList.add("hidden");
+};
+
+// INITIAL RENDER
+renderProducts(filteredProducts);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:"class"}</script>
+
+  <style>
+    .nav-link{color:#444;} .nav-link:hover{color:#d97706;}
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div onclick="location.href='index.html'" class="text-2xl text-amber-600 font-bold cursor-pointer">VendorLink</div>
+
+    <div class="flex gap-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">Dashboard</a>
+    </div>
+
+    <div class="flex gap-4 items-center">
+      <button id="themeToggle" class="theme-btn">🌓</button>
+      <div id="nav-auth-user" class="relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown" class="hidden absolute right-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <button id="logoutBtn" class="dropdown-item text-red-500">Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-10">
+
+  <h1 class="text-4xl font-bold mb-6">My Profile</h1>
+
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+    <p><strong>Name:</strong> <span id="prof-name"></span></p>
+    <p><strong>Email:</strong> <span id="prof-email"></span></p>
+    <p><strong>Role:</strong> <span id="prof-role"></span></p>
+  </div>
+
+</main>
+
+<script type="module" src="assets/js/navbar.js"></script>
+<script type="module" src="assets/js/profile.js"></script>
+
+</body>
+</html>

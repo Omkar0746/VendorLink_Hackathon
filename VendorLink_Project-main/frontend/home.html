@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(251, 146, 60, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(251, 146, 60, 0.8); }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900">
+  
+  <!-- Navigation -->
+  <script type="module" src="assets/js/navbar.js"></script>
+  
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      
+      <!-- Welcome Message -->
+      <div class="mb-12 slide-up">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-orange-500 rounded-full mb-6 pulse-glow">
+          <i class="fas fa-home text-white text-3xl"></i>
+        </div>
+        
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">
+          <span class="gradient-text">Welcome to VendorLink</span>
+        </h1>
+        
+        <p class="text-xl text-gray-600 mb-8">
+          Empowering Farmers & Small Businesses
+        </p>
+        
+        <p class="text-lg text-gray-500 mb-8">
+          Connecting Burger Joints with Local Farmers, Artisans & Small Suppliers
+        </p>
+        
+        <!-- User Welcome -->
+        <div id="userWelcome" class="mb-8">
+          <div class="inline-flex items-center space-x-3 bg-white rounded-full px-6 py-3 shadow-lg">
+            <i class="fas fa-user-circle text-2xl text-orange-500"></i>
+            <span class="text-lg font-medium">Welcome back, <span id="userName">User</span>!</span>
+            <span id="userRoleBadge" class="px-3 py-1 rounded-full text-sm font-medium"></span>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          
+          <!-- Go to Marketplace -->
+          <button onclick="goToMarketplace()" class="group bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-store text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Go to Marketplace</h3>
+            <p class="text-gray-600 mb-4">Access your role-specific marketplace</p>
+            <div class="text-orange-600 font-semibold group-hover:text-orange-700">
+              Explore Now <i class="fas fa-arrow-right ml-2"></i>
+            </div>
+          </button>
+          
+          <!-- View Profile -->
+          <button onclick="viewProfile()" class="group bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+            <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-user-cog text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">My Profile</h3>
+            <p class="text-gray-600 mb-4">Manage your account settings</p>
+            <div class="text-orange-600 font-semibold group-hover:text-orange-700">
+              Manage Profile <i class="fas fa-arrow-right ml-2"></i>
+            </div>
+          </button>
+          
+        </div>
+      </div>
+      
+      <!-- Features Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+        <div class="text-center float-animation">
+          <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-bolt text-orange-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold mb-2">Fast Matching</h4>
+          <p class="text-sm text-gray-600">Connect with partners instantly</p>
+        </div>
+        
+        <div class="text-center float-animation" style="animation-delay: 0.2s;">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-shield-alt text-blue-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold mb-2">Verified Partners</h4>
+          <p class="text-sm text-gray-600">Trust and quality assured</p>
+        </div>
+        
+        <div class="text-center float-animation" style="animation-delay: 0.4s;">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-dollar-sign text-green-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold mb-2">Best Prices</h4>
+          <p class="text-sm text-gray-600">Competitive rates guaranteed</p>
+        </div>
+        
+        <div class="text-center float-animation" style="animation-delay: 0.6s;">
+          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-truck text-purple-600 text-xl"></i>
+          </div>
+          <h4 class="font-semibold mb-2">Quick Delivery</h4>
+          <p class="text-sm text-gray-600">Fast and reliable shipping</p>
+        </div>
+      </div>
+      
+      <!-- Recent Activity -->
+      <div class="mt-16 text-left">
+        <h2 class="text-2xl font-bold mb-6 text-center">Social Impact</h2>
+        <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+            <div class="text-3xl font-bold text-orange-600 mb-2">500+</div>
+            <p class="text-gray-600">Farmers Supported</p>
+          </div>
+          <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+            <div class="text-3xl font-bold text-blue-600 mb-2">300+</div>
+            <p class="text-gray-600">Small Businesses</p>
+          </div>
+          <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+            <div class="text-3xl font-bold text-green-600 mb-2">₹50Lakhs+</div>
+            <p class="text-gray-600">Direct to Farmers</p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  
+  <!-- Background Decorations -->
+  <div class="fixed top-10 left-10 w-20 h-20 bg-orange-200 rounded-full opacity-20 float-animation"></div>
+  <div class="fixed bottom-10 right-10 w-32 h-32 bg-blue-200 rounded-full opacity-20 float-animation" style="animation-delay: 1s;"></div>
+  <div class="fixed top-1/2 right-20 w-16 h-16 bg-green-200 rounded-full opacity-20 float-animation" style="animation-delay: 2s;"></div>
+  
+  <script>
+    // Load user information
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('user'));
+      
+      if (!currentUser) {
+        // If no user, redirect to registration
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Update welcome message
+      document.getElementById('userName').textContent = currentUser.fullName;
+      
+      // Update role badge
+      const roleBadge = document.getElementById('userRoleBadge');
+      if (currentUser.role === 'vendor') {
+        roleBadge.textContent = 'Vendor';
+        roleBadge.className = 'px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium';
+      } else if (currentUser.role === 'supplier') {
+        roleBadge.textContent = 'Supplier';
+        roleBadge.className = 'px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium';
+      }
+    });
+    
+    // Navigation functions
+    function goToMarketplace() {
+      // Go to general marketplace instead of role-specific
+      window.location.href = 'marketplace.html';
+    }
+    
+    function viewProfile() {
+      // Placeholder for profile page
+      alert('Profile page coming soon!');
+    }
+  </script>
+  
+</body>
+</html>

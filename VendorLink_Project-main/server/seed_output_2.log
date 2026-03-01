@@ -1,0 +1,41 @@
+Connecting to MongoDB...
+Connected to MongoDB!
+Clearing existing data...
+Deleted 6 users.
+Deleted 2 products.
+Deleted 6 vendors.
+Deleted 0 orders.
+Data cleared!
+Seeding Users...
+Seeded 6 users.
+Seeding Vendors...
+Vendors seeded.
+Seeding Products...
+Seeded 2 products.
+Seeding Orders...
+Error seeding database: Error: Order validation failed: status: `delivered` is not a valid enum value for path `status`.
+    at ValidationError.inspect (C:\Users\SOHAM\Downloads\VendorLink_Project-main\VendorLink_Project-main\server\node_modules\mongoose\lib\error\validation.js:52:26)
+    at formatValue (node:internal/util/inspect:1148:19)
+    at inspect (node:internal/util/inspect:409:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2897:40)
+    at formatWithOptions (node:internal/util/inspect:2759:10)
+    at console.value (node:internal/console/constructor:377:14)
+    at console.error (node:internal/console/constructor:444:61)
+    at seedDatabase (C:\Users\SOHAM\Downloads\VendorLink_Project-main\VendorLink_Project-main\server\scripts\seed.js:142:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  errors: {
+    status: ValidatorError: `delivered` is not a valid enum value for path `status`.
+        at validate (C:\Users\SOHAM\Downloads\VendorLink_Project-main\VendorLink_Project-main\server\node_modules\mongoose\lib\schemaType.js:1443:13)
+        at SchemaType.doValidate (C:\Users\SOHAM\Downloads\VendorLink_Project-main\VendorLink_Project-main\server\node_modules\mongoose\lib\schemaType.js:1427:7)
+        at C:\Users\SOHAM\Downloads\VendorLink_Project-main\VendorLink_Project-main\server\node_modules\mongoose\lib\document.js:3115:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:84:11) {
+      properties: [Object],
+      kind: 'enum',
+      path: 'status',
+      value: 'delivered',
+      reason: undefined,
+      Symbol(mongoose#validatorError): true
+    }
+  },
+  _message: 'Order validation failed'
+}

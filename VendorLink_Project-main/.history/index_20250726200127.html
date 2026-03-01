@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VendorLink - Smart Sourcing for Street Food Vendors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .view { display: none; }
+        .view.active { display: block; }
+        .modal-bg {
+            background-color: rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message-box.show {
+            opacity: 1;
+        }
+        /* Chatbot styles */
+        #chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #D97706;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+        }
+        #chatbot-box {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: #FDFBF6;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF6]">
+
+    <div id="app" class="min-h-screen flex flex-col">
+        <header class="bg-white shadow-md sticky top-0 z-20">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-[#4A4A4A]">Vendor<span class="text-[#D97706]">Link</span></span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-4">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" data-view="dashboard" class="nav-link text-gray-700 hover:bg-amber-100 hover:text-amber-800 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <a href="#" data-view="marketplace" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 px-3 py-2 rounded-md text-sm font-medium">Marketplace</a>
+                            <a href="#" data-view="suppliers" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 px-3 py-2 rounded-md text-sm font-medium">Suppliers</a>
+                            <a href="#" data-view="community" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 px-3 py-2 rounded-md text-sm font-medium">Community Hub</a>
+                            <div class="relative">
+                                <a href="#" data-view="cart" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 px-3 py-2 rounded-md text-sm font-medium">
+                                    🛒 Cart
+                                    <span id="cartCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Login Button Added -->
+                        <a href="login.html" class="bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-700 transition-colors">Login</a>
+                    </div>
+                    <div class="md:hidden flex items-center">
+                         <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" data-view="dashboard" class="nav-link text-gray-700 hover:bg-amber-100 hover:text-amber-800 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                    <a href="#" data-view="marketplace" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 block px-3 py-2 rounded-md text-base font-medium">Marketplace</a>
+                    <a href="#" data-view="suppliers" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 block px-3 py-2 rounded-md text-base font-medium">Suppliers</a>
+                    <a href="#" data-view="community" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 block px-3 py-2 rounded-md text-base font-medium">Community Hub</a>
+                    <a href="#" data-view="cart" class="nav-link text-gray-500 hover:bg-amber-100 hover:text-amber-800 block px-3 py-2 rounded-md text-base font-medium">🛒 Cart</a>
+                    <!-- Login Button for Mobile -->
+                    <a href="login.html" class="bg-amber-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-amber-700 transition-colors">Login</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div id="dashboard" class="view active">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Welcome, Vendor!</h1>
+                    <p class="mt-2 text-gray-600">Here's your daily overview to help you source smarter and save more.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-1 md:col-span-2 bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">🔥 Top Deals Today</h2>
+                        <div id="top-deals-list" class="space-y-3"></div>
+                    </div>
+                    <div class="lg:col-span-2 md:col-span-2 bg-white p-6 rounded-lg shadow-sm">
+                         <h2 class="text-xl font-semibold text-gray-700 mb-4">⭐ Top Rated Suppliers</h2>
+                         <p class="text-sm text-gray-500 mb-4">Quickly see which suppliers are most trusted by your peers. Higher ratings mean better quality and reliability.</p>
+                        <div class="chart-container">
+                            <canvas id="supplierRatingsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="marketplace" class="view">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Marketplace</h1>
+                    <p class="mt-2 text-gray-600">Find the best prices for your raw materials. Search for an item or browse by category to start comparing.</p>
+                </div>
+                <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="searchInput" placeholder="Search for products like 'Tomatoes' or 'Onions'..." class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                    <div id="categoryFilters" class="flex flex-wrap gap-2 justify-center"></div>
+                </div>
+                <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+                <div id="noResults" class="text-center py-12 text-gray-500 hidden">
+                    <p class="text-xl">No products found. Try a different search or category.</p>
+                </div>
+            </div>
+
+            <div id="suppliers" class="view">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Verified Suppliers</h1>
+                    <p class="mt-2 text-gray-600">This is your directory of trusted suppliers. Each profile includes peer ratings and reviews to help you make informed decisions.</p>
+                </div>
+                <div class="mb-6">
+                    <input type="text" id="supplierSearchInput" placeholder="Search suppliers by name or location..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                <div id="supplierList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="noSupplierResults" class="text-center py-12 text-gray-500 hidden">
+                    <p class="text-xl">No suppliers found matching your search.</p>
+                </div>
+            </div>
+
+            <div id="community" class="view">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Community Hub</h1>
+                    <p class="mt-2 text-gray-600">A space for shared knowledge. Here you'll find essential tips on hygiene, licensing, and best practices to help your business thrive.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-amber-700 mb-3">🧼 Food Safety & Hygiene</h2>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Always wash hands with soap before handling food.</li>
+                            <li>Use separate cutting boards for raw meat and vegetables.</li>
+                            <li>Keep your stall and equipment clean at all times.</li>
+                            <li>Store food at correct temperatures to prevent spoilage.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold text-amber-700 mb-3">📜 Licensing & Permits</h2>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">
+                            <li>Ensure you have a valid FSSAI registration/license.</li>
+                            <li>Display your license clearly at your stall.</li>
+                            <li>Check with your local municipality for any additional permits required.</li>
+                            <li>Keep digital and physical copies of all your documents.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
+                    <h2 class="text-xl font-semibold text-amber-700 mb-3">💡 Community Tips</h2>
+                    <div id="communityTipsList" class="space-y-4 mb-4">
+                        </div>
+                    <div class="border-t pt-4">
+                        <textarea id="newTipInput" class="w-full p-3 border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500" rows="3" placeholder="Share a new tip or ask a question..."></textarea>
+                        <button id="postTipBtn" class="w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors font-semibold">Post Tip</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cart" class="view p-4 md:p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Your Shopping Cart</h1>
+                    <p class="mt-2 text-gray-600">Review your selected items before proceeding.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div id="emptyCartMessage" class="text-center py-12 text-gray-500 hidden">
+                        <p class="text-xl">Your cart is empty.</p>
+                        <p class="mt-2">Start adding products from the <a href="#" data-view="marketplace" class="text-amber-600 hover:underline">Marketplace</a>!</p>
+                    </div>
+
+                    <div id="cartItemsList" class="space-y-4">
+                        </div>
+
+                    <div class="border-t-2 border-dashed border-gray-200 mt-6 pt-6 flex justify-between items-center">
+                        <p class="text-2xl font-bold text-gray-800">Total:</p>
+                        <p id="cartTotal" class="text-3xl font-bold text-green-600">₹0.00</p>
+                    </div>
+
+                    <button id="checkoutBtn" class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold mt-6 shadow-lg">
+                        Proceed to Checkout (Simulated)
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="productModal" class="fixed inset-0 z-30 flex items-center justify-center p-4 modal-bg opacity-0 pointer-events-none">
+        <div id="productModalContent" class="bg-white rounded-lg shadow-xl w-full max-w-2xl transform scale-95">
+            </div>
+    </div>
+
+    <div id="messageBox" class="message-box"></div>
+    
+    <!-- Chatbot Toggle Button -->
+    <div id="chatbot-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.834 8.834 0 01-4.28-.948l-3.675 1.094a.5.5 0 01-.62-.62l1.094-3.675A8.834 8.834 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.415 14.887l2.19-.652a6.975 6.975 0 003.395.965c3.063 0 6-2.694 6-6s-2.937-6-6-6-6 2.694-6 6c0 1.488.58 2.847 1.53 3.896l-.652 2.19a.5.5 0 00.675.675z" clip-rule="evenodd" />
+            <path d="M7 9a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0z" />
+        </svg>
+    </div>
+
+    <!-- Chatbot Box -->
+    <div id="chatbot-box" class="hidden flex flex-col">
+        <div class="p-4 bg-amber-600 text-white text-center font-semibold rounded-t-lg">VendorLink Assistant</div>
+        <div id="chatbot-messages" class="flex-grow p-4 space-y-4 overflow-y-auto">
+            <!-- Initial Message -->
+            <div class="text-left">
+                <div class="inline-block rounded-xl px-4 py-2 shadow-sm bg-white border text-gray-700 max-w-[80%]">
+                    Hi there! How can I help you find the best deals today?
+                    <div class="text-xs mt-1 text-gray-400">Now</div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 bg-white border-t flex items-center">
+            <input id="chatbot-input" type="text" placeholder="Ask me anything..." class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <button id="chatbot-send" class="ml-3 bg-amber-600 text-white p-2 rounded-full hover:bg-amber-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA STORE (Simulating Firestore) ---
+            const suppliersData = [
+                { id: 's1', name: 'Mumbai Fresh Veggies', rating: 4.8, location: 'Dadar Market', contact: '9876543210' },
+                { id: 's2', name: 'Pune Agro Supply', rating: 4.5, location: 'Pune APMC', contact: '9123456789' },
+                { id: 's3', name: 'Quality Spices Co.', rating: 4.9, location: 'Masala Galli', contact: '8765432109' },
+                { id: 's4', name: 'Daily Dairy Needs', rating: 4.2, location: 'Goregaon', contact: '7654321098' },
+                { id: 's5', name: 'City Grain Wholesalers', rating: 4.6, location: 'Thane', contact: '6543210987' },
+            ];
+
+            const productsData = [
+                { id: 'p1', name: 'Tomatoes', category: 'Vegetables', supplierId: 's1', price: 25, unit: 'kg' },
+                { id: 'p2', name: 'Tomatoes', category: 'Vegetables', supplierId: 's2', price: 28, unit: 'kg' },
+                { id: 'p3', name: 'Onions', category: 'Vegetables', supplierId: 's1', price: 30, unit: 'kg' },
+                { id: 'p4', name: 'Onions', category: 'Vegetables', supplierId: 's2', price: 29, unit: 'kg' },
+                { id: 'p5', name: 'Potatoes', category: 'Vegetables', supplierId: 's1', price: 20, unit: 'kg' },
+                { id: 'p6', name: 'Turmeric Powder', category: 'Spices', supplierId: 's3', price: 180, unit: 'kg' },
+                { id: 'p7', name: 'Chilli Powder', category: 'Spices', supplierId: 's3', price: 220, unit: 'kg' },
+                { id: 'p8', name: 'Milk', category: 'Dairy', supplierId: 's4', price: 55, unit: 'litre' },
+                { id: 'p9', name: 'Paneer', category: 'Dairy', supplierId: 's4', price: 350, unit: 'kg' },
+                { id: 'p10', name: 'Basmati Rice', category: 'Grains', supplierId: 's5', price: 90, unit: 'kg' },
+                { id: 'p11', name: 'Potatoes', category: 'Vegetables', supplierId: 's2', price: 22, unit: 'kg' },
+            ];
+
+            const communityTips = [
+                { id: 't1', author: 'Vendor A', text: 'Always buy onions in bulk during harvest season to save costs!', date: '2023-07-20' },
+                { id: 't2', author: 'Vendor B', text: 'A simple trick for keeping coriander fresh: wrap it in a damp cloth and refrigerate.', date: '2023-07-21' },
+                { id: 't3', author: 'Vendor C', text: 'Does anyone know the best place to get fresh ginger in bulk near Dadar?', date: '2023-07-22' },
+            ];
+            
+            const cart = []; 
+
+            // --- STATE MANAGEMENT ---
+            let currentView = 'dashboard';
+            let supplierRatingsChart;
+
+            // --- DOM ELEMENTS ---
+            const views = document.querySelectorAll('.view');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const messageBox = document.getElementById('messageBox');
+
+            // --- NAVIGATION ---
+            const navigateTo = (viewId) => {
+                currentView = viewId;
+                views.forEach(view => {
+                    view.classList.toggle('active', view.id === viewId);
+                });
+                navLinks.forEach(link => {
+                    link.classList.toggle('text-gray-700', link.dataset.view === viewId);
+                    link.classList.toggle('bg-amber-50', link.dataset.view === viewId);
+                    link.classList.toggle('text-gray-500', link.dataset.view !== viewId);
+                });
+                mobileMenu.classList.add('hidden');
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateTo(link.dataset.view);
+                });
+            });
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // --- MODAL & MESSAGE BOX ---
+            const productModal = document.getElementById('productModal');
+            const productModalContent = document.getElementById('productModalContent');
+
+            const openModal = () => {
+                productModal.classList.remove('opacity-0', 'pointer-events-none');
+                productModalContent.classList.remove('scale-95');
+            };
+
+            const closeModal = () => {
+                productModal.classList.add('opacity-0');
+                productModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                     productModal.classList.add('pointer-events-none');
+                }, 300);
+            };
+
+            productModal.addEventListener('click', (e) => {
+                if (e.target === productModal) {
+                    closeModal();
+                }
+            });
+
+            const showMessageBox = (message, type = 'success') => {
+                messageBox.textContent = message;
+                messageBox.style.backgroundColor = type === 'success' ? '#4CAF50' : '#F44336'; 
+                messageBox.classList.add('show');
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, 3000);
+            };
+
+            // --- CART LOGIC ---
+            const addToCart = (productId) => {
+                const product = productsData.find(p => p.id === productId);
+                if (product) {
+                    const existingCartItem = cart.find(item => item.id === productId);
+                    if (existingCartItem) {
+                        existingCartItem.quantity++;
+                    } else {
+                        cart.push({ ...product, quantity: 1 });
+                    }
+                    showMessageBox(`${product.name} added to cart!`, 'success');
+                    updateCartCount(); 
+                    renderCart(); 
+                }
+            };
+
+            const updateCartCount = () => {
+                const cartCountElement = document.getElementById('cartCount');
+                if (cartCountElement) {
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    cartCountElement.textContent = totalItems;
+                    cartCountElement.classList.toggle('hidden', totalItems === 0);
+                }
+            };
+
+            const renderCart = () => {
+                const cartItemsList = document.getElementById('cartItemsList');
+                const cartTotalElement = document.getElementById('cartTotal');
+                const emptyCartMessage = document.getElementById('emptyCartMessage');
+                cartItemsList.innerHTML = '';
+                let totalCost = 0;
+
+                if (cart.length === 0) {
+                    emptyCartMessage.classList.remove('hidden');
+                    cartItemsList.classList.add('hidden');
+                    cartTotalElement.textContent = '₹0.00';
+                    return;
+                } else {
+                    emptyCartMessage.classList.add('hidden');
+                    cartItemsList.classList.remove('hidden');
+                }
+
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    totalCost += itemTotal;
+                    cartItemsList.innerHTML += `
+                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-md border border-gray-200">
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">${item.name} (${item.unit})</p>
+                                <p class="text-sm text-gray-600">Price: ₹${item.price.toFixed(2)} / ${item.unit}</p>
+                                <p class="text-sm text-gray-600">Quantity: ${item.quantity}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-lg text-amber-700">₹${itemTotal.toFixed(2)}</p>
+                                <div class="flex items-center mt-2">
+                                    <button class="bg-gray-200 text-gray-700 px-2 py-1 rounded-md text-sm hover:bg-gray-300 decrease-quantity-btn" data-product-id="${item.id}">-</button>
+                                    <span class="mx-2 text-sm">${item.quantity}</span>
+                                    <button class="bg-gray-200 text-gray-700 px-2 py-1 rounded-md text-sm hover:bg-gray-300 increase-quantity-btn" data-product-id="${item.id}">+</button>
+                                    <button class="bg-red-500 text-white px-3 py-1 ml-2 rounded-md text-sm hover:bg-red-600 remove-from-cart-btn" data-product-id="${item.id}">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cartTotalElement.textContent = `₹${totalCost.toFixed(2)}`;
+
+                document.querySelectorAll('.increase-quantity-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = e.target.dataset.productId;
+                        const item = cart.find(i => i.id === productId);
+                        if (item) {
+                            item.quantity++;
+                            renderCart();
+                            updateCartCount();
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.decrease-quantity-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = e.target.dataset.productId;
+                        const item = cart.find(i => i.id === productId);
+                        if (item && item.quantity > 1) {
+                            item.quantity--;
+                            renderCart();
+                            updateCartCount();
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = e.target.dataset.productId;
+                        const index = cart.findIndex(i => i.id === productId);
+                        if (index > -1) {
+                            cart.splice(index, 1);
+                            showMessageBox('Item removed from cart.', 'info');
+                            renderCart();
+                            updateCartCount();
+                        }
+                    });
+                });
+                
+                document.getElementById('checkoutBtn').addEventListener('click', () => {
+                    if (cart.length > 0) {
+                        showMessageBox('Proceeding to checkout! (This is a simulation)', 'success');
+                        cart.length = 0; 
+                        renderCart();
+                        updateCartCount();
+                        navigateTo('dashboard');
+                    } else {
+                        showMessageBox('Your cart is empty. Please add items before checking out.', 'error');
+                    }
+                });
+            };
+
+
+            // --- RENDER FUNCTIONS ---
+            const renderDashboard = () => {
+                const topDealsList = document.getElementById('top-deals-list');
+                const deals = [...productsData]
+                    .sort((a, b) => a.price - b.price)
+                    .slice(0, 4);
+                topDealsList.innerHTML = deals.map(deal => `
+                    <div class="flex justify-between items-center p-2 rounded-md hover:bg-gray-50">
+                        <div>
+                            <p class="font-semibold text-gray-800">${deal.name}</p>
+                            <p class="text-sm text-gray-500">${suppliersData.find(s => s.id === deal.supplierId).name}</p>
+                        </div>
+                        <span class="font-bold text-lg text-amber-600">₹${deal.price}/${deal.unit}</span>
+                    </div>
+                `).join('');
+
+                const ctx = document.getElementById('supplierRatingsChart').getContext('2d');
+                const sortedSuppliers = [...suppliersData].sort((a, b) => b.rating - a.rating);
+
+                if (supplierRatingsChart) {
+                    supplierRatingsChart.destroy();
+                }
+
+                supplierRatingsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedSuppliers.map(s => s.name),
+                        datasets: [{
+                            label: 'Average Rating',
+                            data: sortedSuppliers.map(s => s.rating),
+                            backgroundColor: 'rgba(217, 119, 6, 0.6)',
+                            borderColor: 'rgba(217, 119, 6, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `Rating: ${context.raw} ★`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 5,
+                                grid: { display: false }
+                            },
+                            y: {
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            };
+
+            const renderMarketplace = (filter = '', category = 'All') => {
+                const productList = document.getElementById('productList');
+                const noResults = document.getElementById('noResults');
+
+                const groupedProducts = productsData.reduce((acc, product) => {
+                    if (!acc[product.name]) {
+                        acc[product.name] = [];
+                    }
+                    acc[product.name].push(product);
+                    return acc;
+                }, {});
+
+                const filteredAndGrouped = Object.entries(groupedProducts).filter(([name, products]) => {
+                    const nameMatch = name.toLowerCase().includes(filter.toLowerCase());
+                    const categoryMatch = category === 'All' || products[0].category === category;
+                    return nameMatch && categoryMatch;
+                });
+
+                if (filteredAndGrouped.length === 0) {
+                    productList.innerHTML = '';
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                    productList.innerHTML = filteredAndGrouped.map(([name, products]) => {
+                        const bestPrice = Math.min(...products.map(p => p.price));
+                        const product = products[0]; 
+
+                        return `
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-transparent hover:border-amber-500 hover:shadow-md transition-all cursor-pointer relative" data-product-name="${name}">
+                                <div class="w-full h-32 bg-gray-200 rounded-md mb-4 flex items-center justify-center">
+                                    <span class="text-4xl">${product.category === 'Vegetables' ? '🍅' : product.category === 'Spices' ? '🌶️' : product.category === 'Dairy' ? '🥛' : '🍚'}</span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800">${name}</h3>
+                                <p class="text-sm text-gray-500">${product.category}</p>
+                                <div class="mt-4 flex justify-between items-center">
+                                    <div>
+                                        <p class="text-xs text-gray-500">Starts from</p>
+                                        <p class="text-xl font-bold text-amber-700">₹${bestPrice}/${product.unit}</p>
+                                    </div>
+                                    <span class="text-sm font-medium text-blue-600">${products.length} suppliers</span>
+                                </div>
+                                <button class="mt-4 w-full bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700 transition-colors text-sm font-medium add-to-cart-btn" data-product-id="${product.id}">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation(); 
+                        const productId = e.target.dataset.productId;
+                        addToCart(productId);
+                    });
+                });
+                
+                productList.querySelectorAll('[data-product-name]').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('add-to-cart-btn')) { 
+                            const productName = card.dataset.productName;
+                            renderProductDetails(productName);
+                        }
+                    });
+                });
+            };
+
+            const renderProductDetails = (productName) => {
+                const products = productsData.filter(p => p.name === productName).sort((a,b) => a.price - b.price);
+                const product = products[0];
+
+                productModalContent.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800">${product.name}</h2>
+                                <p class="text-gray-500">${product.category}</p>
+                            </div>
+                            <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">&times;</button>
+                        </div>
+                        <p class="mb-6 text-gray-600">Compare prices from all available suppliers. The best deals are listed at the top.</p>
+                        <div class="overflow-x-auto mb-6">
+                            <table class="w-full text-left">
+                                <thead class="border-b-2 border-gray-200">
+                                    <tr>
+                                        <th class="p-3 text-sm font-semibold text-gray-600">Supplier</th>
+                                        <th class="p-3 text-sm font-semibold text-gray-600">Location</th>
+                                        <th class="p-3 text-sm font-semibold text-gray-600">Rating</th>
+                                        <th class="p-3 text-sm font-semibold text-gray-600">Contact</th> <th class="p-3 text-sm font-semibold text-gray-600">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${products.map(p => {
+                                        const supplier = suppliersData.find(s => s.id === p.supplierId);
+                                        return `
+                                        <tr class="border-b border-gray-100">
+                                            <td class="p-3 font-medium text-gray-800">${supplier.name}</td>
+                                            <td class="p-3 text-gray-600">${supplier.location}</td>
+                                            <td class="p-3 text-gray-600">${supplier.rating} ★</td>
+                                            <td class="p-3 text-gray-600">${supplier.contact}</td> <td class="p-3 font-bold text-amber-700">₹${p.price}/${p.unit}</td>
+                                        </tr>
+                                        `
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button id="requestQuoteBtn" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md">Request Quote</button>
+                    </div>
+                `;
+
+                document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+                document.getElementById('requestQuoteBtn').addEventListener('click', () => {
+                    showMessageBox(`Quote requested for ${productName}! Supplier will contact you shortly.`, 'success');
+                    closeModal();
+                });
+                openModal();
+            };
+
+            const renderSuppliers = (filter = '') => {
+                const supplierList = document.getElementById('supplierList');
+                const noSupplierResults = document.getElementById('noSupplierResults');
+
+                const filteredSuppliers = suppliersData.filter(supplier =>
+                    supplier.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    supplier.location.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredSuppliers.length === 0) {
+                    supplierList.innerHTML = '';
+                    noSupplierResults.classList.remove('hidden');
+                } else {
+                    noSupplierResults.classList.add('hidden');
+                    supplierList.innerHTML = filteredSuppliers.map(supplier => `
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-gray-800">${supplier.name}</h3>
+                            <p class="text-gray-500 mb-3">${supplier.location}</p>
+                            <div class="flex items-center">
+                                <span class="text-amber-500 font-bold text-lg mr-2">${supplier.rating}</span>
+                                <div class="flex">
+                                    ${'★'.repeat(Math.floor(supplier.rating))}${'☆'.repeat(5 - Math.floor(supplier.rating))}
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">Contact: ${supplier.contact}</p> </div>
+                    `).join('');
+                }
+            };
+
+            const renderCommunityTips = () => {
+                const communityTipsList = document.getElementById('communityTipsList');
+                communityTipsList.innerHTML = communityTips.map(tip => `
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <p class="text-gray-700 mb-1">${tip.text}</p>
+                        <p class="text-xs text-gray-500">Posted by ${tip.author} on ${tip.date}</p>
+                    </div>
+                `).join('');
+            };
+
+
+            // --- INTERACTION SETUP ---
+            const setupMarketplaceInteractions = () => {
+                const searchInput = document.getElementById('searchInput');
+                const categoryFilters = document.getElementById('categoryFilters');
+
+                const categories = ['All', ...new Set(productsData.map(p => p.category))];
+                categoryFilters.innerHTML = categories.map(cat => `
+                    <button class="category-btn px-4 py-2 text-sm font-medium rounded-full border transition-colors ${cat === 'All' ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}" data-category="${cat}">${cat}</button>
+                `).join('');
+
+                categoryFilters.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('category-btn')) {
+                        const selectedCategory = e.target.dataset.category;
+                        document.querySelectorAll('.category-btn').forEach(btn => {
+                            btn.classList.toggle('bg-amber-600', btn.dataset.category === selectedCategory);
+                            btn.classList.toggle('text-white', btn.dataset.category === selectedCategory);
+                            btn.classList.toggle('border-amber-600', btn.dataset.category === selectedCategory);
+                            btn.classList.toggle('bg-white', btn.dataset.category !== selectedCategory);
+                            btn.classList.toggle('text-gray-700', btn.dataset.category !== selectedCategory);
+                            btn.classList.toggle('border-gray-300', btn.dataset.category !== selectedCategory);
+                        });
+                        renderMarketplace(searchInput.value, selectedCategory);
+                    }
+                });
+
+                searchInput.addEventListener('input', () => {
+                    const selectedCategory = document.querySelector('.category-btn.bg-amber-600').dataset.category;
+                    renderMarketplace(searchInput.value, selectedCategory);
+                });
+            };
+
+            const setupSupplierInteractions = () => {
+                const supplierSearchInput = document.getElementById('supplierSearchInput');
+                supplierSearchInput.addEventListener('input', () => {
+                    renderSuppliers(supplierSearchInput.value);
+                });
+            };
+
+            const setupCommunityInteractions = () => {
+                const newTipInput = document.getElementById('newTipInput');
+                const postTipBtn = document.getElementById('postTipBtn');
+
+                postTipBtn.addEventListener('click', () => {
+                    const tipText = newTipInput.value.trim();
+                    if (tipText) {
+                        const newTip = {
+                            id: `t${communityTips.length + 1}`,
+                            author: 'Current Vendor', 
+                            text: tipText,
+                            date: new Date().toISOString().slice(0, 10)
+                        };
+                        communityTips.unshift(newTip); 
+                        renderCommunityTips();
+                        newTipInput.value = '';
+                        showMessageBox('Your tip has been posted!', 'success');
+                    } else {
+                        showMessageBox('Please enter a tip before posting.', 'error');
+                    }
+                });
+            };
+            
+            // --- CHATBOT LOGIC ---
+            const chatbotToggle = document.getElementById('chatbot-toggle');
+            const chatbotBox = document.getElementById('chatbot-box');
+            const chatbotInput = document.getElementById('chatbot-input');
+            const chatbotSend = document.getElementById('chatbot-send');
+            const chatbotMessages = document.getElementById('chatbot-messages');
+
+            const respondTo = (input) => {
+                const msg = input.toLowerCase();
+
+                const cheapestMatch = msg.match(/(?:cheapest|lowest price).*?(onions|potatoes|milk|turmeric|chilli|rice|paneer|tomatoes)/);
+                if (cheapestMatch) {
+                    const product = cheapestMatch[1];
+                    const matches = productsData.filter(p => p.name.toLowerCase().includes(product));
+                    if (matches.length) {
+                    const cheapest = matches.reduce((a, b) => (a.price < b.price ? a : b));
+                    const supplier = suppliersData.find(s => s.id === cheapest.supplierId);
+                    return `The cheapest ${product} is ₹${cheapest.price}/${cheapest.unit} from ${supplier.name} at ${supplier.location}.`;
+                    }
+                }
+
+                const categoryMatch = msg.match(/top\s+supplier.*?(dairy|vegetables|grains|spices)/);
+                if (categoryMatch) {
+                    const category = categoryMatch[1].charAt(0).toUpperCase() + categoryMatch[1].slice(1);
+                    const relevant = productsData.filter(p => p.category === category);
+                    if (relevant.length) {
+                    const supplierScores = {};
+                    relevant.forEach(p => {
+                        supplierScores[p.supplierId] = (supplierScores[p.supplierId] || 0) + 1;
+                    });
+                    const topSupplierId = Object.keys(supplierScores).reduce((a, b) =>
+                        (suppliersData.find(s => s.id === a)?.rating || 0) > (suppliersData.find(s => s.id === b)?.rating || 0) ? a : b
+                    );
+                    const supplier = suppliersData.find(s => s.id === topSupplierId);
+                    return `${supplier.name} is a top-rated supplier for ${category} products with a ${supplier.rating}★ rating.`;
+                    }
+                }
+
+                const tipMatch = msg.match(/any.*tips.*(on|about)\s+(\w+)/);
+                if (tipMatch) {
+                    const keyword = tipMatch[2];
+                    const tips = communityTips.filter(t => t.text.toLowerCase().includes(keyword));
+                    if (tips.length) {
+                    return tips.map(t => `💡 ${t.text}`).join('\n\n');
+                    } else {
+                    return `No tips found on "${keyword}". Try asking the community!`;
+                    }
+                }
+
+                if (msg.includes("top deals")) return "Check the Dashboard for today's best prices.";
+                if (msg.includes("supplier")) return "Visit the Suppliers tab to view verified vendors.";
+                if (msg.includes("compare prices") || msg.includes("product") || msg.includes("price")) return "Go to the Marketplace to compare prices.";
+                if (msg.includes("tip") || msg.includes("hygiene") || msg.includes("community")) return "Check the Community Hub for tips and info.";
+
+                return "I’m not sure about that. Try asking things like ‘cheapest onions’, ‘top supplier for dairy’, or ‘any tips on coriander’.";
+            };
+
+            const formatMessage = (text, sender = 'user') => {
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const wrapper = document.createElement('div');
+                wrapper.className = sender === 'user' ? 'text-right' : 'text-left';
+                wrapper.innerHTML = `
+                <div class="inline-block rounded-xl px-4 py-2 shadow-sm ${sender === 'user' ? 'bg-amber-100 text-gray-800' : 'bg-white border text-gray-700'} max-w-[80%]">
+                    ${text.replace(/\n/g, '<br>')}
+                    <div class="text-xs mt-1 text-gray-400">${time}</div>
+                </div>`;
+                chatbotMessages.appendChild(wrapper);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            };
+
+            const sendMessage = () => {
+                const input = chatbotInput.value.trim();
+                if (!input) return;
+                formatMessage(input, 'user');
+                chatbotInput.value = '';
+                chatbotInput.focus();
+
+                const typing = document.createElement('div');
+                typing.className = 'text-left';
+                typing.innerHTML = `<div class="inline-block bg-white border rounded-xl px-4 py-2 text-gray-500 text-sm italic shadow-sm max-w-[80%]">Typing...</div>`;
+                chatbotMessages.appendChild(typing);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+                setTimeout(() => {
+                typing.remove();
+                formatMessage(respondTo(input), 'bot');
+                }, 600);
+            };
+
+            chatbotSend.addEventListener('click', sendMessage);
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            chatbotToggle.addEventListener('click', () => {
+                chatbotBox.classList.toggle('hidden');
+            });
+
+
+            // --- INITIALIZATION ---
+            const init = () => {
+                navigateTo('dashboard');
+                renderDashboard();
+                renderMarketplace();
+                renderSuppliers();
+                renderCommunityTips();
+                renderCart(); 
+                updateCartCount(); 
+
+                setupMarketplaceInteractions();
+                setupSupplierInteractions();
+                setupCommunityInteractions();
+            };
+
+            init();
+        });
+    </script>
+</body>
+</html>

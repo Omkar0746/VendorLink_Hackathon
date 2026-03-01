@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50">
+<head>
+  <meta charset="UTF-8">
+  <title>Vendor Marketplace - Find Suppliers | VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes slide-up {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .slide-up {
+      animation: slide-up 0.6s ease-out;
+    }
+    
+    .supplier-card {
+      transition: all 0.3s ease;
+    }
+    
+    .supplier-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .filter-chip {
+      transition: all 0.2s ease;
+    }
+    
+    .filter-chip:hover {
+      transform: scale(1.05);
+    }
+    
+    .filter-chip.active {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="text-gray-900">
+  
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-2xl font-bold text-blue-600">
+            <i class="fas fa-search mr-2"></i>Supplier Discovery
+          </h1>
+          <span class="text-sm text-gray-500">Find reliable suppliers for your needs</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <button class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+            <i class="fas fa-heart mr-2"></i>Saved Suppliers
+            <span id="savedCount" class="ml-2 bg-blue-600 text-white px-2 py-1 rounded-full text-xs">0</span>
+          </button>
+          <button class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
+            <i class="fas fa-file-alt mr-2"></i>My RFQs
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    
+    <!-- Search & Filters Section -->
+    <section class="bg-white rounded-xl shadow-sm p-6 mb-6 slide-up">
+      <div class="grid md:grid-cols-4 gap-4 mb-4">
+        <div class="md:col-span-2">
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="searchInput" placeholder="Search suppliers by name, material, or location..." 
+                   class="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          </div>
+        </div>
+        
+        <select id="materialFilter" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="">All Materials</option>
+          <option value="vegetables">Fresh Vegetables</option>
+          <option value="cheese">Cheese & Dairy</option>
+          <option value="buns">Burger Buns</option>
+          <option value="meat">Meat Patties</option>
+          <option value="sauces">Sauces & Condiments</option>
+          <option value="fries">Frozen Fries</option>
+          <option value="packaging">Packaging</option>
+        </select>
+        
+        <select id="supportFilter" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="">All Suppliers</option>
+          <option value="farmer">Support Farmers</option>
+          <option value="small">Small Businesses</option>
+          <option value="women">Women Entrepreneurs</option>
+          <option value="cooperative">Farmers Cooperative</option>
+          <option value="eco">Eco-Friendly</option>
+        </select>
+        
+        <select id="locationFilter" class="px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <option value="">All Locations</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="delhi">Delhi</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="chennai">Chennai</option>
+          <option value="pune">Pune</option>
+        </select>
+      </div>
+      
+      <!-- Capacity Filter -->
+      <div class="flex items-center space-x-4">
+        <label class="text-sm font-medium">Min Capacity:</label>
+        <input type="range" id="capacityFilter" min="0" max="5000" value="0" class="flex-1">
+        <span id="capacityValue" class="text-sm font-medium">0 tons/month</span>
+      </div>
+      
+      <!-- Quick Filter Chips -->
+      <div class="flex flex-wrap gap-2 mt-4">
+        <button class="filter-chip px-4 py-2 bg-gray-100 rounded-full text-sm" data-filter="verified">
+          <i class="fas fa-check-circle mr-1"></i>Verified Only
+        </button>
+        <button class="filter-chip px-4 py-2 bg-gray-100 rounded-full text-sm" data-filter="rating">
+          <i class="fas fa-star mr-1"></i>4+ Rating
+        </button>
+        <button class="filter-chip px-4 py-2 bg-gray-100 rounded-full text-sm" data-filter="available">
+          <i class="fas fa-check mr-1"></i>Available Now
+        </button>
+        <button class="filter-chip px-4 py-2 bg-gray-100 rounded-full text-sm" data-filter="local">
+          <i class="fas fa-map-marker-alt mr-1"></i>Local Suppliers
+        </button>
+      </div>
+    </section>
+
+    <!-- Results Header -->
+    <section class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-xl font-semibold">Found <span id="supplierCount">12</span> Suppliers</h2>
+        <p class="text-sm text-gray-600">Matching your criteria</p>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <select class="px-4 py-2 border rounded-lg text-sm">
+          <option>Sort by: Best Match</option>
+          <option>Sort by: Rating</option>
+          <option>Sort by: Capacity</option>
+          <option>Sort by: Location</option>
+        </select>
+        
+        <div class="flex bg-gray-100 rounded-lg">
+          <button class="px-3 py-2 bg-white rounded-l-lg border">
+            <i class="fas fa-th-large"></i>
+          </button>
+          <button class="px-3 py-2 rounded-r-lg">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suppliers Grid -->
+    <section id="suppliersGrid" class="grid md:grid-cols-3 gap-6">
+      
+      <!-- Supplier Card 1 -->
+      <div class="supplier-card bg-white rounded-xl shadow-sm p-6 slide-up" style="animation-delay: 0.1s;">
+        <div class="flex items-start justify-between mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="w-16 h-16 rounded-lg">
+          <div class="flex items-center space-x-2">
+            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
+              <i class="fas fa-check-circle mr-1"></i>Verified
+            </span>
+            <button onclick="toggleSaveSupplier(this)" class="text-gray-400 hover:text-red-500 transition">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+        </div>
+        
+        <h3 class="font-semibold text-lg mb-1">Steel Industries Ltd</h3>
+        <p class="text-sm text-gray-600 mb-3">Manufacturer • Mumbai, Maharashtra</p>
+        
+        <div class="flex items-center mb-3">
+          <div class="flex text-yellow-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="ml-2 text-sm text-gray-600">4.5 (127 reviews)</span>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm font-medium text-gray-700 mb-2">Materials:</p>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">Steel Rods</span>
+            <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">Steel Pipes</span>
+            <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">Steel Sheets</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+          <div>
+            <span class="text-gray-500">Capacity:</span>
+            <span class="font-medium">1000 tons/month</span>
+          </div>
+          <div>
+            <span class="text-gray-500">Lead Time:</span>
+            <span class="font-medium">7-10 days</span>
+          </div>
+        </div>
+        
+        <div class="flex space-x-2">
+          <button onclick="viewSupplierProfile('supplier_1')" 
+                  class="flex-1 px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm">
+            <i class="fas fa-eye mr-1"></i>View Profile
+          </button>
+          <button onclick="sendRFQ('supplier_1')" 
+                  class="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">
+            <i class="fas fa-file-alt mr-1"></i>Send RFQ
+          </button>
+        </div>
+      </div>
+
+      <!-- Supplier Card 2 -->
+      <div class="supplier-card bg-white rounded-xl shadow-sm p-6 slide-up" style="animation-delay: 0.2s;">
+        <div class="flex items-start justify-between mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="w-16 h-16 rounded-lg">
+          <div class="flex items-center space-x-2">
+            <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
+              <i class="fas fa-check-circle mr-1"></i>Verified
+            </span>
+            <button onclick="toggleSaveSupplier(this)" class="text-gray-400 hover:text-red-500 transition">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+        </div>
+        
+        <h3 class="font-semibold text-lg mb-1">Cement Suppliers Co</h3>
+        <p class="text-sm text-gray-600 mb-3">Distributor • Delhi, NCR</p>
+        
+        <div class="flex items-center mb-3">
+          <div class="flex text-yellow-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+          <span class="ml-2 text-sm text-gray-600">4.2 (89 reviews)</span>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm font-medium text-gray-700 mb-2">Materials:</p>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-2 py-1 bg-gray-50 text-gray-700 rounded text-xs">Portland Cement</span>
+            <span class="px-2 py-1 bg-gray-50 text-gray-700 rounded text-xs">White Cement</span>
+            <span class="px-2 py-1 bg-gray-50 text-gray-700 rounded text-xs">Ready Mix</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+          <div>
+            <span class="text-gray-500">Capacity:</span>
+            <span class="font-medium">500 tons/month</span>
+          </div>
+          <div>
+            <span class="text-gray-500">Lead Time:</span>
+            <span class="font-medium">3-5 days</span>
+          </div>
+        </div>
+        
+        <div class="flex space-x-2">
+          <button onclick="viewSupplierProfile('supplier_2')" 
+                  class="flex-1 px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm">
+            <i class="fas fa-eye mr-1"></i>View Profile
+          </button>
+          <button onclick="sendRFQ('supplier_2')" 
+                  class="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">
+            <i class="fas fa-file-alt mr-1"></i>Send RFQ
+          </button>
+        </div>
+      </div>
+
+      <!-- Supplier Card 3 -->
+      <div class="supplier-card bg-white rounded-xl shadow-sm p-6 slide-up" style="animation-delay: 0.3s;">
+        <div class="flex items-start justify-between mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="w-16 h-16 rounded-lg">
+          <div class="flex items-center space-x-2">
+            <button onclick="toggleSaveSupplier(this)" class="text-gray-400 hover:text-red-500 transition">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+        </div>
+        
+        <h3 class="font-semibold text-lg mb-1">Chemical Solutions</h3>
+        <p class="text-sm text-gray-600 mb-3">Manufacturer • Chennai, Tamil Nadu</p>
+        
+        <div class="flex items-center mb-3">
+          <div class="flex text-yellow-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+          <span class="ml-2 text-sm text-gray-600">4.0 (56 reviews)</span>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm font-medium text-gray-700 mb-2">Materials:</p>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs">Industrial Chemicals</span>
+            <span class="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs">Solvents</span>
+            <span class="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs">Acids</span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mb-4 text-sm">
+          <div>
+            <span class="text-gray-500">Capacity:</span>
+            <span class="font-medium">200 tons/month</span>
+          </div>
+          <div>
+            <span class="text-gray-500">Lead Time:</span>
+            <span class="font-medium">14-21 days</span>
+          </div>
+        </div>
+        
+        <div class="flex space-x-2">
+          <button onclick="viewSupplierProfile('supplier_3')" 
+                  class="flex-1 px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm">
+            <i class="fas fa-eye mr-1"></i>View Profile
+          </button>
+          <button onclick="sendRFQ('supplier_3')" 
+                  class="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">
+            <i class="fas fa-file-alt mr-1"></i>Send RFQ
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Compare Section -->
+    <section id="compareSection" class="hidden bg-white rounded-xl shadow-sm p-6 mt-6">
+      <h3 class="font-semibold text-lg mb-4">
+        <i class="fas fa-balance-scale mr-2"></i>Compare Suppliers 
+        <span id="compareCount" class="text-sm text-gray-600">(0 selected)</span>
+      </h3>
+      <div id="compareList" class="space-y-2"></div>
+      <button onclick="compareSuppliers()" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+        Compare Selected
+      </button>
+    </section>
+
+  </main>
+
+  <!-- RFQ Modal -->
+  <div id="rfqModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+      <h3 class="text-lg font-semibold mb-4">Send Request for Quotation</h3>
+      <form onsubmit="submitRFQ(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Material Required</label>
+            <input type="text" required class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Quantity</label>
+            <input type="text" required class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Required By</label>
+            <input type="date" required class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Additional Details</label>
+            <textarea rows="3" class="w-full px-3 py-2 border rounded-lg"></textarea>
+          </div>
+        </div>
+        <div class="flex space-x-3 mt-6">
+          <button type="button" onclick="closeRFQModal()" class="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50">
+            Cancel
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Send RFQ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/navbar.js"></script>
+  <script src="assets/js/vendor-marketplace.js"></script>
+  
+</body>
+</html>

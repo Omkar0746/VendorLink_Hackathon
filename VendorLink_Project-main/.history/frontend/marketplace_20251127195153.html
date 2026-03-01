@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Marketplace • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- Navbar -->
+<script type="module" src="assets/js/navbar.js"></script>
+
+<section class="max-w-7xl mx-auto px-6 py-10">
+
+  <h1 class="text-4xl font-bold text-amber-600 mb-8">Marketplace</h1>
+
+  <!-- Search Bar -->
+  <div class="mb-6">
+    <input id="searchBar" placeholder="Search raw materials..." class="w-full p-3 rounded-xl border dark:bg-gray-800" />
+  </div>
+
+  <!-- Product Grid -->
+  <div id="productList" class="grid md:grid-cols-3 gap-6"></div>
+
+</section>
+
+<script type="module">
+  import { api } from "./assets/js/api.js";
+
+  const container = document.getElementById("productList");
+  const searchBar = document.getElementById("searchBar");
+
+  let products = [];
+
+  async function loadProducts() {
+    try {
+      products = await api("/products", "GET");
+
+      renderProducts(products);
+    } catch (err) {
+      container.innerHTML = "<p class='text-red-500'>Failed to load products.</p>";
+    }
+  }
+
+  function renderProducts(list) {
+    container.innerHTML = "";
+
+    list.forEach(p => {
+      container.innerHTML += `
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-4">
+          <img src="${p.image}" class="rounded-lg h-40 w-full object-cover mb-4" />
+
+          <h2 class="text-xl font-semibold">${p.name}</h2>
+          <p class="text-gray-500 dark:text-gray-300">${p.category}</p>
+          <p class="mt-2 text-lg font-bold text-amber-600">₹${p.price}</p>
+
+          <p class="text-sm text-gray-500 mt-1">Supplier: ${p.supplier?.name || "N/A"}</p>
+
+          <button 
+            onclick="addToCart('${p._id}', '${p.name}', ${p.price})" 
+            class="bg-amber-600 text-white w-full py-2 mt-4 rounded-lg hover:bg-amber-700">
+            Add to Cart
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  // Search functionality
+  searchBar.addEventListener("input", () => {
+    const q = searchBar.value.toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+    renderProducts(filtered);
+  });
+
+  // Add to cart
+  window.addToCart = (id, name, price) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({ id, name, price, qty: 1 });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  };
+
+  loadProducts();
+</script>
+
+</body>
+</html>
