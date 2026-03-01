@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marketplace • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+
+  <!-- Copy styles from index.html -->
+  <style>
+    .nav-link{color:#444;} .nav-link:hover{color:#d97706;} .dark .nav-link{color:#eee;}
+    .btn-outline{padding:6px 14px;border:1px solid #d97706;color:#d97706;border-radius:8px;}
+    .btn-filled{background:#d97706;color:#fff;padding:6px 14px;border-radius:8px;}
+    .profile-btn{padding:6px 14px;background:#f3f4f6;border-radius:8px;}
+    .dropdown-item{padding:10px 15px;display:block;}
+    .toggle-checkbox{width:40px;height:20px;}
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div onclick="location.href='index.html'" class="text-2xl text-amber-600 font-extrabold cursor-pointer">VendorLink</div>
+
+    <div class="flex gap-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">Dashboard</a>
+    </div>
+
+    <div class="flex gap-4 items-center">
+      <div id="roleSliderWrapper" class="hidden">
+        <span id="roleText"></span>
+        <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+      </div>
+
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-guest" class="flex gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown" class="hidden absolute right-0 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+          <button id="logoutBtn" class="dropdown-item text-red-500">Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 py-10">
+
+  <h1 class="text-4xl font-bold mb-6">Marketplace</h1>
+
+  <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+</main>
+
+<script type="module" src="assets/js/navbar.js"></script>
+<script type="module" src="assets/js/marketplace.js"></script>
+
+</body>
+</html>

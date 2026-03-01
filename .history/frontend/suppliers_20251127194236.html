@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Suppliers • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<script type="module" src="assets/js/navbar.js"></script>
+
+<section class="max-w-7xl mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold text-amber-600 mb-6">Top Suppliers</h1>
+
+  <p class="text-gray-600 dark:text-gray-300 mb-6 text-lg">
+    Browse trusted suppliers offering vegetables, grains, spices, packaging materials and more.
+  </p>
+
+  <div id="supplierList" class="grid md:grid-cols-3 gap-6"></div>
+</section>
+
+<script>
+  // Sample static supplier list (can connect backend later)
+  const suppliers = [
+    {
+      name: "Mumbai Fresh Veggies",
+      category: "Vegetables & Fruits",
+      location: "Dadar Market",
+      img: "https://images.unsplash.com/photo-1587049352846-4c4e1c90e1e0"
+    },
+    {
+      name: "Premium Spices Hub",
+      category: "Spices & Masalas",
+      location: "Crawford Market",
+      img: "https://images.unsplash.com/photo-1590086782792-42dd2350140d"
+    },
+    {
+      name: "Quality Packaging Co.",
+      category: "Packaging Items",
+      location: "Saki Naka",
+      img: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77"
+    }
+  ];
+
+  const container = document.getElementById("supplierList");
+
+  suppliers.forEach(s => {
+    container.innerHTML += `
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition p-4">
+        <img src="${s.img}" class="rounded-lg h-40 w-full object-cover mb-4"/>
+        <h2 class="text-xl font-semibold">${s.name}</h2>
+        <p class="text-gray-600 dark:text-gray-300">${s.category}</p>
+        <p class="text-sm text-gray-500 mt-1">📍 ${s.location}</p>
+        <button class="w-full bg-amber-600 text-white px-4 py-2 mt-4 rounded-lg hover:bg-amber-700">
+          Contact Supplier
+        </button>
+      </div>
+    `;
+  });
+</script>
+
+</body>
+</html>

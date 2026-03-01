@@ -1,0 +1,4 @@
+node_modules/
+.env
+package-lock.json
+ml_price_api/__pycache__/

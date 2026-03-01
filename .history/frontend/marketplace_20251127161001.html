@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink • Marketplace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="min-h-screen">
+
+<nav class="bg-white dark:bg-gray-800 shadow px-6 py-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold text-amber-600">VendorLink Marketplace</h1>
+  <div class="flex gap-4 items-center">
+    <button id="themeToggle" class="text-sm text-gray-600 dark:text-gray-300">🌓</button>
+    <button id="logoutBtn" class="text-sm text-red-500 font-semibold">Logout</button>
+  </div>
+</nav>
+
+<main class="p-6">
+  <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Available Products</h2>
+  <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+</main>
+
+<script type="module" src="assets/js/marketplace.js"></script>
+</body>
+</html>

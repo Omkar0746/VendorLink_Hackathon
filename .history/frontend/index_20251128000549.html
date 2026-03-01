@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>VendorLink • Smart Sourcing for Street Food Vendors</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: "class" }
+  </script>
+
+  <style>
+    .nav-link { color:#444; text-decoration:none; }
+    .nav-link:hover { color:#d97706; }
+    .dark .nav-link { color:#ddd; }
+
+    .btn-outline {
+      padding:6px 14px; border:1px solid #d97706; color:#d97706; border-radius:8px;
+    }
+    .btn-outline:hover { background:#fff7e6; }
+
+    .btn-filled {
+      background:#d97706; color:white; padding:6px 14px; border-radius:8px;
+    }
+    .btn-filled:hover { background:#b45309; }
+
+    .profile-btn {
+      padding:6px 14px; background:#f3f4f6; border-radius:8px;
+    }
+    .dark .profile-btn { background:#374151; }
+
+    .dropdown-item {
+      padding:10px 15px; display:block; font-size:0.9rem;
+      color:#4b5563; text-align:left;
+    }
+    .dropdown-item:hover { background:#f5f5f5; }
+    .dark .dropdown-item { color:#e5e7eb; }
+
+    .toggle-checkbox { width:40px; height:20px; accent-color:#d97706; }
+
+    .theme-btn { padding:6px; background:#e5e7eb; border-radius:6px; }
+    .dark .theme-btn { background:#4b5563; }
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR START -->
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight">VendorLink</span>
+    </div>
+
+    <!-- NAV LINKS -->
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+
+      <!-- ⭐ AI PRICE BUTTON ADDED -->
+      <a href="ai_predict.html" class="nav-link font-semibold text-purple-700 dark:text-purple-300">
+        🔮 AI Price
+      </a>
+
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <!-- Supplier Dashboard (visible only if logged in as supplier) -->
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html"
+         class="nav-link hidden">Dashboard</a>
+    </div>
+
+    <!-- AUTH SECTION -->
+    <div class="flex items-center gap-4">
+      <!-- ROLE TOGGLE -->
+      <div id="roleSliderWrapper" class="hidden">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+        </label>
+      </div>
+
+      <!-- DARK MODE TOGGLE -->
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <!-- Guest View -->
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <!-- Logged-in User View -->
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown"
+             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+
+          <button id="logoutBtn"
+                  class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- NAVBAR END -->
+
+<!-- MAIN HOME PAGE CONTENT -->
+<main class="max-w-7xl mx-auto px-4 py-10">
+  <section class="grid md:grid-cols-2 gap-12 items-center">
+
+    <!-- LEFT SIDE CONTENT -->
+    <div>
+      <h1 class="text-5xl font-extrabold leading-tight">
+        Smart sourcing for <span class="text-amber-600">street food vendors</span>.
+      </h1>
+
+      <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+        Discover trusted suppliers, optimize costs, and grow your business with smart analytics.
+      </p>
+
+      <div class="mt-6 flex gap-4">
+        <a href="marketplace.html"
+           class="px-6 py-3 rounded-lg bg-amber-600 text-white font-semibold hover:bg-amber-700">
+          Explore Marketplace
+        </a>
+
+        <a href="signup.html"
+           class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700
+                  text-gray-700 dark:text-gray-200 font-semibold hover:border-amber-600">
+          Join VendorLink
+        </a>
+      </div>
+
+      <!-- ⭐ AI Button Under Main Buttons -->
+      <a href="ai_predict.html">
+        <button class="mt-5 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow">
+          🔮 AI Price Prediction
+        </button>
+      </a>
+    </div>
+
+    <!-- RIGHT SNAPSHOT CARD -->
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 space-y-4">
+      <h2 class="text-lg font-semibold mb-4">Live Snapshot</h2>
+
+      <div class="grid grid-cols-3 gap-4 text-center">
+
+        <div class="bg-amber-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Active Vendors</p>
+          <p class="text-2xl font-bold text-amber-600">120+</p>
+        </div>
+
+        <div class="bg-emerald-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Suppliers</p>
+          <p class="text-2xl font-bold text-emerald-600">45+</p>
+        </div>
+
+        <div class="bg-indigo-50 dark:bg-gray-900 rounded-xl p-3">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Orders Per Day</p>
+          <p class="text-2xl font-bold text-indigo-600">300+</p>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<script type="module" src="assets/js/navbar.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up • VendorLink</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" }</script>
+</head>
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- NAVBAR (same as above) -->
+  <!-- ... copy navbar block here ... -->
+
+  <main class="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-10 w-full max-w-md">
+      <h1 class="text-3xl font-bold text-center mb-6">Create Your Account ✨</h1>
+
+      <form id="signupForm" class="space-y-5">
+        <input id="name" placeholder="Full Name"
+               class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+
+        <input id="email" type="email" placeholder="Email"
+               class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+
+        <input id="password" type="password" placeholder="Password"
+               class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+
+        <select id="role"
+                class="w-full p-3 rounded-lg border dark:border-gray-700 bg-gray-50 dark:bg-gray-900 dark:text-gray-100" required>
+          <option value="vendor">Vendor (Street Food Seller)</option>
+          <option value="supplier">Supplier (Raw Material Provider)</option>
+        </select>
+
+        <button
+          class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg text-lg font-semibold shadow-md">
+          Create Account
+        </button>
+      </form>
+
+      <p class="text-center mt-4 text-sm text-gray-600 dark:text-gray-300">
+        Already have an account?
+        <a href="login.html" class="text-amber-600 dark:text-amber-400 font-semibold underline">Login</a>
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="assets/js/signup.js"></script>
+  <script type="module" src="assets/js/navbar.js"></script>
+</body>
+</html>

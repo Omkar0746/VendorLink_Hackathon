@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - VendorLink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-[#FDFBF6] flex items-center justify-center min-h-screen py-12">
+    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-[#4A4A4A]">Create Your Account</h1>
+            <p class="text-gray-500 mt-2">Join the VendorLink community.</p>
+        </div>
+
+        <form id="signupForm" class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" required>
+            </div>
+
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">I am a...</label>
+                <select id="category" name="category" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" required>
+                    <option value="vendor">Vendor (Street Food Seller)</option>
+                    <option value="supplier">Supplier (Raw Materials Provider)</option>
+                </select>
+            </div>
+
+            <!-- Fields specific to Suppliers -->
+            <div id="supplierFields" class="hidden space-y-4">
+                 <div>
+                    <label for="shopName" class="block text-sm font-medium text-gray-700">Shop Name</label>
+                    <input type="text" id="shopName" name="shopName" placeholder="e.g., Mumbai Fresh Veggies" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                 <div>
+                    <label for="contactNumber" class="block text-sm font-medium text-gray-700">Contact Number</label>
+                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter your contact number" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                 <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Location / Address</label>
+                    <input type="text" id="location" name="location" placeholder="e.g., Dadar Market" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Create Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a unique username" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" required>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Create Password</label>
+                <input type="password" id="password" name="password" placeholder="Choose a secure password" class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500" required>
+            </div>
+
+            <div>
+                <button type="submit" class="w-full bg-amber-600 text-white py-3 px-4 rounded-lg hover:bg-amber-700 transition-colors font-semibold shadow-md mt-4">Create Account</button>
+            </div>
+        </form>
+
+        <p class="text-sm text-center text-gray-500 mt-6">
+            Already have an account? <a href="login.html" class="font-medium text-amber-600 hover:underline">Login</a>
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            const supplierFields = document.getElementById('supplierFields');
+            const shopNameInput = document.getElementById('shopName');
+            const contactNumberInput = document.getElementById('contactNumber');
+            const locationInput = document.getElementById('location');
+
+            // Show/hide supplier-specific fields based on category selection
+            categorySelect.addEventListener('change', function() {
+                if (this.value === 'supplier') {
+                    supplierFields.classList.remove('hidden');
+                    shopNameInput.required = true;
+                    contactNumberInput.required = true;
+                    locationInput.required = true;
+                } else {
+                    supplierFields.classList.add('hidden');
+                    shopNameInput.required = false;
+                    contactNumberInput.required = false;
+                    locationInput.required = false;
+                }
+            });
+
+            // Handle the form submission
+            document.getElementById('signupForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Retrieve existing users from localStorage, or initialize an empty array
+                const users = JSON.parse(localStorage.getItem('vendorLinkUsers')) || [];
+
+                const username = document.getElementById('username').value;
+
+                // Check if username already exists
+                if (users.some(user => user.username === username)) {
+                    alert('Username already exists. Please choose a different one.');
+                    return;
+                }
+
+                // Create a new user object with all the form data
+                const newUser = {
+                    name: document.getElementById('name').value,
+                    category: document.getElementById('category').value,
+                    username: username,
+                    password: document.getElementById('password').value,
+                    // Supplier-specific details
+                    shopName: document.getElementById('shopName').value || null,
+                    contactNumber: document.getElementById('contactNumber').value || null,
+                    location: document.getElementById('location').value || null,
+                    // Add a default description for suppliers
+                    description: "A quality supplier of raw materials." 
+                };
+
+                // Add the new user to the array and save back to localStorage
+                users.push(newUser);
+                localStorage.setItem('vendorLinkUsers', JSON.stringify(users));
+
+                alert('Account created successfully! You can now log in.');
+                window.location.href = 'login.html'; 
+            });
+        });
+    </script>
+    <!-- signup.html -->
+<script type="module" src="assets/js/auth.js"></script>
+<script type="module">
+  import { signup } from './assets/js/auth.js';
+  document.getElementById('signupForm').addEventListener('submit', signup);
+</script>
+
+
+    <script src="js/signup.js"></script>
+</body>
+</html>

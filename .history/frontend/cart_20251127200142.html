@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Cart • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: "class" };</script>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="text-2xl font-extrabold text-amber-600 tracking-tight">VendorLink</span>
+    </div>
+
+    <div class="flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="suppliers.html" class="nav-link">Suppliers</a>
+      <a href="community.html" class="nav-link">Community Hub</a>
+      <a href="cart.html" class="nav-link">Cart</a>
+
+      <a id="nav-supplier-dashboard" href="supplier_dashboard.html" class="nav-link hidden">
+        Dashboard
+      </a>
+    </div>
+
+    <div class="flex items-center gap-4">
+
+      <div id="roleSliderWrapper" class="hidden">
+        <label class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+          <span id="roleText"></span>
+          <input id="roleToggle" type="checkbox" disabled class="toggle-checkbox">
+        </label>
+      </div>
+
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-guest" class="flex items-center gap-3">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-filled">Sign Up</a>
+      </div>
+
+      <div id="nav-auth-user" class="hidden relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown"
+             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+
+          <button id="logoutBtn"
+                  class="dropdown-item text-red-500 hover:bg-red-50 dark:hover:bg-gray-700">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script type="module" src="assets/js/navbar.js"></script>
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold text-amber-600 mb-6">Your Cart</h1>
+
+  <div id="cartItems" class="space-y-5"></div>
+
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow mt-6 flex justify-between">
+    <h2 class="text-2xl font-bold">Total:</h2>
+    <h2 id="totalAmount" class="text-2xl font-bold">₹0</h2>
+  </div>
+
+  <button class="w-full bg-amber-600 text-white py-3 mt-6 rounded-lg hover:bg-amber-700">
+    Place Order
+  </button>
+</div>
+
+<script>
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const container = document.getElementById("cartItems");
+  const totalLabel = document.getElementById("totalAmount");
+
+  function renderCart() {
+    let total = 0;
+    container.innerHTML = "";
+
+    cartItems.forEach(item => {
+      total += item.price * item.qty;
+
+      container.innerHTML += `
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-semibold">${item.name}</h3>
+            <p class="text-gray-600 dark:text-gray-300">₹${item.price} × ${item.qty}</p>
+          </div>
+          <h3 class="text-lg font-bold">₹${item.price * item.qty}</h3>
+        </div>
+      `;
+    });
+
+    totalLabel.textContent = "₹" + total;
+  }
+
+  renderCart();
+</script>
+
+</body>
+</html>

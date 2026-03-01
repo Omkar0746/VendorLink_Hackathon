@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Supplier Dashboard • VendorLink</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:"class"}</script>
+
+  <style>
+    .nav-link{color:#444;} .nav-link:hover{color:#d97706;}
+  </style>
+</head>
+
+<body class="text-gray-900 dark:text-gray-100">
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <div onclick="location.href='index.html'" class="text-2xl text-amber-600 font-bold cursor-pointer">VendorLink</div>
+
+    <div class="flex gap-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="supplier_dashboard.html" class="nav-link">Dashboard</a>
+    </div>
+
+    <div class="flex gap-4 items-center">
+      <button id="themeToggle" class="theme-btn">🌓</button>
+
+      <div id="nav-auth-user" class="relative">
+        <button id="profileBtn" class="profile-btn">Profile ⬇</button>
+
+        <div id="profileDropdown" class="hidden absolute right-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <a href="profile.html" class="dropdown-item">My Profile</a>
+          <button id="logoutBtn" class="dropdown-item text-red-500">Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-4 py-10">
+
+  <h1 class="text-4xl font-bold mb-6">Supplier Dashboard</h1>
+
+  <!-- Analytics -->
+  <div class="grid md:grid-cols-2 gap-6 mb-10">
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <p class="text-gray-600">Total Orders</p>
+      <p id="totalOrders" class="text-3xl font-bold mt-2"></p>
+    </div>
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <p class="text-gray-600">Revenue</p>
+      <p id="revenue" class="text-3xl font-bold mt-2"></p>
+    </div>
+  </div>
+
+  <!-- Add Product -->
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-10">
+    <h2 class="text-xl font-bold mb-4">Add Product</h2>
+
+    <form id="addProductForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <input id="pName" placeholder="Product Name" class="p-3 border rounded-lg dark:bg-gray-900">
+      <input id="pPrice" placeholder="Price" class="p-3 border rounded-lg dark:bg-gray-900">
+      <input id="pImage" placeholder="Image URL" class="p-3 border rounded-lg dark:bg-gray-900 md:col-span-2">
+      <input id="pCategory" placeholder="Category" class="p-3 border rounded-lg dark:bg-gray-900 md:col-span-2">
+
+      <button class="bg-amber-600 text-white py-3 rounded-lg md:col-span-2">Add Product</button>
+    </form>
+  </div>
+
+  <!-- Product List -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+    <h2 class="text-xl font-bold mb-4">Your Products</h2>
+
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b">
+          <th class="p-3">Name</th>
+          <th class="p-3">Price</th>
+          <th class="p-3">Category</th>
+          <th class="p-3">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody id="productTable"></tbody>
+    </table>
+
+  </div>
+
+</main>
+
+<script type="module" src="assets/js/navbar.js"></script>
+<script type="module" src="assets/js/supplier.js"></script>
+
+<script type="module">
+  import { requireSupplier } from "./assets/js/protect.js";
+
+  const user = requireSupplier();
+  if (!user) return; // Stops page from breaking
+
+  // Load analytics
+  loadDashboard(user.id);
+</script>
+
+
+</body>
+</html>
